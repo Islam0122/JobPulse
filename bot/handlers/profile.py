@@ -1,43 +1,22 @@
 from aiogram import Router, F
-from aiogram.types import Message
-from aiogram.fsm.context import FSMContext
+from aiogram.types import Message,FSInputFile,CallbackQuery
 from services.api_client import api
-from keyboards.onboarding_kb import get_main_menu_keyboard
 
 router = Router()
+logo = "AgACAgIAAxkBAANdaVaQDKbUzpyPbrB9DbKWbkck63YAAscNaxvqqrlKq_AlEQiE2TUBAAMCAAN5AAM4BA"
 
+def build_profile_text(user: dict) -> str:
+    stack_text = ", ".join(s["name"] for s in user.get("stack", [])) or "Не указано"
+    work_format_text = ", ".join(w["title"] for w in user.get("work_formats", [])) or "Не указано"
+    employment_text = ", ".join(e["title"] for e in user.get("employment_types", [])) or "Не указано"
 
-@router.message(F.text == "📊 Мой профиль")
-async def show_profile(message: Message):
-    """Показать профиль пользователя"""
-    telegram_id = message.from_user.id
+    salary_text = (
+        f"{user['salary_from']} {user['currency']}"
+        if user.get("salary_from")
+        else "Не указано"
+    )
 
-    user = await api.get_user(telegram_id)
-
-    if not user:
-        await message.answer(
-            "❌ Профиль не найден.\n"
-            "Используй /start для регистрации."
-        )
-        return
-
-    # Форматируем стек
-    stack_names = [s['name'] for s in user.get('stack', [])]
-    stack_text = ", ".join(stack_names) if stack_names else "Не указано"
-
-    # Форматируем форматы работы
-    work_formats = [w['title'] for w in user.get('work_formats', [])]
-    work_format_text = ", ".join(work_formats) if work_formats else "Не указано"
-
-    # Форматируем типы занятости
-    employment = [e['title'] for e in user.get('employment_types', [])]
-    employment_text = ", ".join(employment) if employment else "Не указано"
-
-    # Зарплата
-    salary_text = f"{user.get('salary_from', 0)} {user.get('currency', 'USD')}" if user.get(
-        'salary_from') else "Не указано"
-
-    profile_text = f"""
+    return f"""
 👤 <b>Твой профиль</b>
 
 📝 <b>Роль:</b> {user.get('role', 'Не указано')}
@@ -51,15 +30,47 @@ async def show_profile(message: Message):
 
 🔔 <b>Уведомления:</b> {user.get('notify_mode_label', 'Не указано')}
 ✅ <b>Статус:</b> {'Активен' if user.get('is_active') else 'Неактивен'}
-
-📅 <b>Создан:</b> {user.get('created_at', '')[:10]}
 """
 
-    await message.answer(
-        profile_text,
+
+@router.message(F.text == "📊 Мой профиль")
+async def show_profile(message: Message):
+    user = await api.get_user(message.from_user.id)
+
+    if not user:
+        await message.answer("❌ Профиль не найден")
+        return
+
+    await message.answer_photo(
+        photo=logo,
+        caption=build_profile_text(user),
         parse_mode="HTML",
         reply_markup=get_main_menu_keyboard()
     )
+
+
+@router.callback_query(F.data == "MyProfile")
+async def show_profile_callback(callback: CallbackQuery):
+    user = await api.get_user(callback.from_user.id)
+
+    if not user:
+        await callback.answer("Профиль не найден", show_alert=True)
+        return
+    try:
+        await callback.message.edit_caption(
+        caption=build_profile_text(user),
+        parse_mode="HTML",
+        reply_markup=get_main_menu_keyboard()
+        )
+    except Exception as e:
+        await callback.message.delete()
+        await callback.message.answer_photo(
+            photo=logo,
+            caption=build_profile_text(user),
+            parse_mode="HTML",
+            reply_markup=get_main_menu_keyboard()
+        )
+    await callback.answer()
 
 
 @router.message(F.text == "🔔 Настройки уведомлений")
@@ -135,7 +146,7 @@ async def help_command(message: Message):
 2. Бот находит подходящие вакансии
 3. Ты получаешь уведомления по расписанию
 
-<b>Поддержка:</b> @support_username
+<b>Поддержка:</b> @islam_duishobaev
 """
 
     await message.answer(
