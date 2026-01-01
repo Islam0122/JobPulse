@@ -74,7 +74,7 @@ async def cmd_start(message: Message, state: FSMContext):
     if user and user.get('is_profile_completed'):
         await send_or_edit_message(
             message,
-            f"С возвращением, {username}! 👋\n\n"
+            f"👋 Привет, {username}! 👋\n\n"
             f"Ваш профиль уже настроен.\n"
             f"Используйте меню ниже для навигации.",
             reply_markup=get_main_menu_keyboard()

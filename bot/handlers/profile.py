@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message,FSInputFile,CallbackQuery
 from services.api_client import api
+from keyboards.onboarding_kb import *
 
 router = Router()
 logo = "AgACAgIAAxkBAANdaVaQDKbUzpyPbrB9DbKWbkck63YAAscNaxvqqrlKq_AlEQiE2TUBAAMCAAN5AAM4BA"
@@ -33,23 +34,22 @@ def build_profile_text(user: dict) -> str:
 """
 
 
-@router.message(F.text == "📊 Мой профиль")
-async def show_profile(message: Message):
-    user = await api.get_user(message.from_user.id)
+MENU_TEXT = (
+    "🏠 <b>Главное меню</b>\n\n"
+    "Выбери действие 👇"
+)
 
-    if not user:
-        await message.answer("❌ Профиль не найден")
-        return
-
-    await message.answer_photo(
-        photo=logo,
-        caption=build_profile_text(user),
+@router.callback_query(F.data == "menu:home")
+async def show_menu(callback: CallbackQuery):
+    await callback.message.edit_caption(
+        caption=MENU_TEXT,
         parse_mode="HTML",
         reply_markup=get_main_menu_keyboard()
     )
+    await callback.answer()
 
 
-@router.callback_query(F.data == "MyProfile")
+@router.callback_query(F.data == "menu:profile")
 async def show_profile_callback(callback: CallbackQuery):
     user = await api.get_user(callback.from_user.id)
 
@@ -60,7 +60,7 @@ async def show_profile_callback(callback: CallbackQuery):
         await callback.message.edit_caption(
         caption=build_profile_text(user),
         parse_mode="HTML",
-        reply_markup=get_main_menu_keyboard()
+        reply_markup=get_return_keyboard()
         )
     except Exception as e:
         await callback.message.delete()
@@ -70,6 +70,38 @@ async def show_profile_callback(callback: CallbackQuery):
             parse_mode="HTML",
             reply_markup=get_main_menu_keyboard()
         )
+    await callback.answer()
+
+
+HELP_TEXT = """
+❓ <b>Помощь</b>
+
+<b>Что умеет бот:</b>
+• Помогает найти подходящие вакансии
+• Учитывает твой профиль и предпочтения
+• Присылает уведомления автоматически
+
+<b>Разделы меню:</b>
+📊 Мой профиль — твои данные  
+🔔 Уведомления — частота оповещений  
+✏️ Редактировать — изменить профиль  
+❓ Помощь — этот экран  
+
+<b>Как это работает:</b>
+1️⃣ Ты заполняешь профиль  
+2️⃣ Бот подбирает вакансии  
+3️⃣ Ты получаешь уведомления  
+
+<b>Поддержка:</b> @islam_duishobaev
+"""
+
+@router.callback_query(F.data == "menu:help")
+async def show_help(callback: CallbackQuery):
+    await callback.message.edit_caption(
+        caption=HELP_TEXT,
+        parse_mode="HTML",
+        reply_markup=get_return_keyboard()
+    )
     await callback.answer()
 
 
@@ -125,32 +157,3 @@ async def edit_profile(message: Message):
     )
 
 
-@router.message(F.text == "❓ Помощь")
-async def help_command(message: Message):
-    help_text = """
-❓ <b>Помощь</b>
-
-<b>Доступные команды:</b>
-/start - Настроить/обновить профиль
-/profile - Показать профиль
-/help - Эта справка
-
-<b>Кнопки меню:</b>
-📊 Мой профиль - Просмотр твоих данных
-🔔 Настройки уведомлений - Изменить частоту
-✏️ Редактировать профиль - Обновить данные
-❓ Помощь - Эта справка
-
-<b>Как работает бот:</b>
-1. Ты заполняешь профиль
-2. Бот находит подходящие вакансии
-3. Ты получаешь уведомления по расписанию
-
-<b>Поддержка:</b> @islam_duishobaev
-"""
-
-    await message.answer(
-        help_text,
-        parse_mode="HTML",
-        reply_markup=get_main_menu_keyboard()
-    )

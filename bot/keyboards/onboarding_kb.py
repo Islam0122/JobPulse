@@ -159,3 +159,13 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
 
     builder.adjust(2)
     return builder.as_markup()
+
+def get_return_keyboard() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+
+    builder.button(
+        text="⬅️ Назад",
+        callback_data="menu:home"
+    )
+
+    return builder.as_markup()
