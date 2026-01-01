@@ -157,3 +157,20 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'JobPulse',
     'VERSION': '1.0.0',
 }
+from .redis import *
+from celery.schedules import crontab
+
+CELERY_BEAT_SCHEDULE = {
+    'send-daily-notifications': {
+        'task': 'apps.users.tasks.send_daily_notifications',
+        'schedule': crontab(hour=9, minute=0),  # Каждый день в 9:00
+    },
+    'clear-cache-midnight': {
+        'task': 'apps.users.tasks.clear_expired_cache',
+        'schedule': crontab(hour=0, minute=0),  # Каждый день в полночь
+    },
+    'update-statistics': {
+        'task': 'apps.users.tasks.update_user_statistics',
+        'schedule': crontab(minute='*/30'),  # Каждые 30 минут
+    },
+}

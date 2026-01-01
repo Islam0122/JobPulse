@@ -11,6 +11,23 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
   web:
     build: .
@@ -25,8 +42,49 @@ services:
     environment:
       - DJANGO_ENV=production
       - POSTGRES_HOST=db
+      - REDIS_HOST=redis
     depends_on:
       - db
+      - redis
+    networks:
+      - app-network
+
+  celery:
+    build: .
+    command: celery -A config worker -l info
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_ENV=production
+      - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+      - web
+    networks:
+      - app-network
+
+  celery-beat:
+    build: .
+    command: celery -A config beat -l info
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_ENV=production
+      - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+      - redis
+      - web
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
