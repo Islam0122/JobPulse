@@ -1,1 +1,4 @@
-aiogram==3.0.0b8
+aiohttp==3.11.11
+aiohttp==3.11.11
+python-dotenv==1.0.1
+redis==5.2.1

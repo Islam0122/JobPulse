@@ -1,0 +1,111 @@
+ERROR 2026-01-01 16:48:27,198 log 6256 6227341312 Internal Server Error: /api/stacks/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/users/views.py", line 137, in list
+    return super().list(request)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/generics.py", line 67, in get_queryset
+    assert self.queryset is not None, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'StackViewSet' should either include a `queryset` attribute, or override the `get_queryset()` method.
+ERROR 2026-01-01 16:48:27,201 basehttp 6256 6227341312 "GET /api/stacks/ HTTP/1.1" 500 123467
+ERROR 2026-01-01 16:48:28,786 log 6256 6244167680 Internal Server Error: /api/stacks/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/users/views.py", line 137, in list
+    return super().list(request)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/generics.py", line 67, in get_queryset
+    assert self.queryset is not None, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'StackViewSet' should either include a `queryset` attribute, or override the `get_queryset()` method.
+ERROR 2026-01-01 16:48:28,788 basehttp 6256 6244167680 "GET /api/stacks/ HTTP/1.1" 500 123467
+ERROR 2026-01-01 16:48:43,985 log 6256 6160035840 Internal Server Error: /api/stacks/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 188, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 186, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/users/views.py", line 137, in list
+    return super().list(request)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+                                    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/rest_framework/generics.py", line 67, in get_queryset
+    assert self.queryset is not None, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'StackViewSet' should either include a `queryset` attribute, or override the `get_queryset()` method.
+ERROR 2026-01-01 16:48:43,987 basehttp 6256 6160035840 "GET /api/stacks/ HTTP/1.1" 500 126664
