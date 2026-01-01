@@ -8,7 +8,7 @@ environ.Env.read_env(os.path.join(Path(__file__).resolve().parent.parent.parent,
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-SECRET_KEY = env('SECRET_KEY', default='super-secret-key')
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-super-secret-key-change-in-production')
 DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
@@ -24,18 +24,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_spectacular',
-
-
+    # Apps
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'apps.core.middleware.JWTAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -59,111 +58,101 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-from .cors import *
-# --- Локализация ---
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 6}
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
 LANGUAGE_CODE = 'ru-RU'
-TIME_ZONE = 'Asia/Bishkek'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# --- Файлы ---
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# --- DRF Settings ---
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
     ],
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }
 
-# --- JWT Settings ---
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': True,
+    'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
-    'UPDATE_LAST_LOGIN': True,
-
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUDIENCE': None,
-    'ISSUER': None,
-
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
-# --- Spectacular Settings ---
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'JobPulse API',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
-    'COMPONENT_SPLIT_REQUEST': True,
-    'SCHEMA_PATH_PREFIX': r'/api/',
-}
+from .cors import *
 
-# --- Jazzmin Settings ---
 JAZZMIN_SETTINGS = {
-    "site_title": "JobPulse",
-    "site_header": "Админка JobPulse",
-    "site_brand": "JobPulse",
-    "site_logo": None,
-    "welcome_sign": "Добро пожаловать в админку JobPulse!",
-    "copyright": "JobPulse",
-    "topmenu_links": [
-        {"name": "Главная", "url": "/admin/", "permissions": ["auth.view_user"]},
-        {"name": "API Документация", "url": "/api/swagger/", "new_window": True},
-    ],
     "show_ui_builder": True,
-    "changeform_format": "horizontal_tabs",
-    "related_modal_active": True,
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": "",
-    "footer_small_text": "",
-    "body_small_text": "",
-    "brand_small_text": "",
-    "brand_colour": "navbar-warning",
-    "accent": "accent-navy",
-    "navbar": "navbar-white navbar-light",
-    "no_navbar_border": True,
-    "navbar_fixed": True,
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": True,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-light-warning",
-    "sidebar_nav_small_text": "",
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-teal",
+    "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": True,
+    "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": True,
-    "theme": "default",
-    "dark_mode_theme": None,
+    "sidebar_nav_flat_style": False,
+    "theme": "litera",
+    "dark_mode_theme": "cyborg",
     "button_classes": {
-        "primary": "btn-outline-primary",
-        "secondary": "btn-outline-secondary",
-        "info": "btn-outline-info",
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
         "warning": "btn-outline-warning",
-        "danger": "btn-outline-danger",
-        "success": "btn-outline-success"
+        "danger": "btn-danger",
+        "success": "btn-success"
     }
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'JobPulse',
+    'VERSION': '1.0.0',
 }
