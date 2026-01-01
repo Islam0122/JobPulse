@@ -17,13 +17,6 @@ from django.views.decorators.cache import cache_page
 from .cache import UserCache, ReferenceCache
 
 
-
-class StackViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Stack.objects.all()
-    serializer_class = StackSerializer
-    permission_classes = [AllowAny]
-
-
 class WorkFormatViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = WorkFormat.objects.all()
     serializer_class = WorkFormatSerializer
