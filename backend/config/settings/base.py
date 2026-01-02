@@ -9,6 +9,7 @@ environ.Env.read_env(os.path.join(Path(__file__).resolve().parent.parent.parent,
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-super-secret-key-change-in-production')
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     # Apps
     'apps.users',
     'apps.channels',
+    'apps.broadcastprompt',
 
 ]
 

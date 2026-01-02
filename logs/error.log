@@ -525,3 +525,683 @@ Traceback (most recent call last):
   File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
     raise AppRegistryNotReady("Apps aren't loaded yet.")
 django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 22:15:49,959 log 5594 6164131840 Internal Server Error: /admin/broadcastprompt/broadcastmessage/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 684, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 293, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 333, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 686, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: BroadcastMessage has no field named 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 221, in _get_response
+    response = response.render()
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 47, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/library.py", line 363, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 357, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 333, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 324, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 221, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 302, in lookup_field
+    value = attr(obj)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/admin.py", line 50, in status_badge
+    return format_html(
+        '<span style="color: orange; font-weight: bold;">● Черновик</span>'
+    )
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/html.py", line 137, in format_html
+    raise TypeError("args or kwargs must be provided.")
+TypeError: args or kwargs must be provided.
+ERROR 2026-01-02 22:15:49,962 log 5594 6164131840 "GET /admin/broadcastprompt/broadcastmessage/ HTTP/1.1" 500 435992
+ERROR 2026-01-02 22:17:15,182 log 5697 6202241024 Internal Server Error: /admin/broadcastprompt/broadcastmessage/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 684, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 293, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 333, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 686, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: BroadcastMessage has no field named 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 221, in _get_response
+    response = response.render()
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 47, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/library.py", line 363, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 357, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 333, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 324, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 221, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 302, in lookup_field
+    value = attr(obj)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/admin.py", line 50, in status_badge
+    return format_html(
+        '<span style="color: orange; font-weight: bold;">● Черновик</span>'
+    )
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/html.py", line 137, in format_html
+    raise TypeError("args or kwargs must be provided.")
+TypeError: args or kwargs must be provided.
+ERROR 2026-01-02 22:17:15,186 log 5697 6202241024 "GET /admin/broadcastprompt/broadcastmessage/ HTTP/1.1" 500 435704
+ERROR 2026-01-02 22:18:35,721 log 5761 6163247104 Internal Server Error: /admin/broadcastprompt/broadcastmessage/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 684, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 293, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 333, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 686, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: BroadcastMessage has no field named 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 221, in _get_response
+    response = response.render()
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 47, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/library.py", line 363, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 357, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 333, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 324, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 221, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 302, in lookup_field
+    value = attr(obj)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/admin.py", line 50, in status_badge
+    return format_html(
+        '<span style="color: orange; font-weight: bold;">● Черновик</span>'
+    )
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/html.py", line 137, in format_html
+    raise TypeError("args or kwargs must be provided.")
+TypeError: args or kwargs must be provided.
+ERROR 2026-01-02 22:18:35,724 log 5761 6163247104 "GET /admin/broadcastprompt/broadcastmessage/ HTTP/1.1" 500 435392
+ERROR 2026-01-02 22:19:10,532 log 5821 6132412416 Internal Server Error: /admin/broadcastprompt/broadcastmessage/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 684, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 293, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 333, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 686, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: BroadcastMessage has no field named 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 221, in _get_response
+    response = response.render()
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 47, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/library.py", line 363, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 357, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 333, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 324, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 221, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 302, in lookup_field
+    value = attr(obj)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/admin.py", line 50, in status_badge
+    return format_html(
+        '<span style="color: orange; font-weight: bold;">● Черновик</span>'
+    )
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/html.py", line 137, in format_html
+    raise TypeError("args or kwargs must be provided.")
+TypeError: args or kwargs must be provided.
+ERROR 2026-01-02 22:19:10,535 log 5821 6132412416 "GET /admin/broadcastprompt/broadcastmessage/ HTTP/1.1" 500 434515
+ERROR 2026-01-02 22:19:11,158 log 5821 6132412416 Internal Server Error: /admin/broadcastprompt/broadcastmessage/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 684, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 293, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 333, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/options.py", line 686, in get_field
+    raise FieldDoesNotExist(
+        "%s has no field named '%s'" % (self.object_name, field_name)
+    )
+django.core.exceptions.FieldDoesNotExist: BroadcastMessage has no field named 'status_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 221, in _get_response
+    response = response.render()
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 174, in render
+    return self._render(context)
+           ~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 160, in render
+    return compiled_parent._render(context)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/test/utils.py", line 114, in instrumented_test_render
+    return self.nodelist.render(context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/loader_tags.py", line 66, in render
+    result = block.nodelist.render(context)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1091, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/base.py", line 1052, in render_annotated
+    return self.render(context)
+           ~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/base.py", line 47, in render
+    return super().render(context)
+           ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/template/library.py", line 363, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 357, in result_list
+    "results": list(results(cl)),
+               ~~~~^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 333, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 324, in __init__
+    super().__init__(*items)
+    ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/templatetags/admin_list.py", line 221, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/utils.py", line 302, in lookup_field
+    value = attr(obj)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/admin.py", line 50, in status_badge
+    return format_html(
+        '<span style="color: orange; font-weight: bold;">● Черновик</span>'
+    )
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/html.py", line 137, in format_html
+    raise TypeError("args or kwargs must be provided.")
+TypeError: args or kwargs must be provided.
+ERROR 2026-01-02 22:19:11,162 log 5821 6132412416 "GET /admin/broadcastprompt/broadcastmessage/ HTTP/1.1" 500 434515
+ERROR 2026-01-02 22:24:34,744 log 5981 6192459776 Internal Server Error: /admin/broadcastprompt/broadcastmessage/8/change/
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 710, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/sites.py", line 247, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1945, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1801, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1852, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/contrib/admin/options.py", line 1272, in save_model
+    obj.save()
+    ~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/db/models/base.py", line 981, in save_base
+    post_save.send(
+    ~~~~~~~~~~~~~~^
+        sender=origin,
+        ^^^^^^^^^^^^^^
+    ...<4 lines>...
+        using=using,
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/dispatch/dispatcher.py", line 209, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/signals.py", line 10, in broadcast_post_save
+    send_broadcast_message(instance)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/apps/broadcastprompt/services.py", line 8, in send_broadcast_message
+    users = TGUser.objects.exclude(telegram_id__isnull=True)
+            ^^^^^^
+NameError: name 'TGUser' is not defined. Did you mean: 'User'?
+ERROR 2026-01-02 22:24:34,749 log 5981 6192459776 "POST /admin/broadcastprompt/broadcastmessage/8/change/ HTTP/1.1" 500 156993
