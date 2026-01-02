@@ -21,8 +21,6 @@ async def send_or_edit_message(
         reply_markup=None,
         photo: str = None
 ) -> Message:
-    text = html.escape(text)
-
     if isinstance(target, CallbackQuery):
         if photo and target.message.photo:
             await target.message.edit_caption(
@@ -41,7 +39,6 @@ async def send_or_edit_message(
             await target.message.delete()
             return message
         else:
-            # Редактируем существующее сообщение с фото
             await target.message.edit_caption(
                 caption=text,
                 reply_markup=reply_markup,
@@ -49,6 +46,11 @@ async def send_or_edit_message(
             )
             return target.message
     else:
+        try:
+            await target.delete()
+        except:
+            pass
+
         if photo:
             return await target.answer_photo(
                 photo=photo,
@@ -69,19 +71,22 @@ async def send_or_edit_message(
 @router.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):
     telegram_id = message.from_user.id
-    username = html.escape(message.from_user.username or f"user_{telegram_id}")
+    username = message.from_user.username or f"user_{telegram_id}"
+
     user = await api.get_user(telegram_id)
+
     if user and user.get('is_profile_completed'):
         await send_or_edit_message(
             message,
-            f"👋 Привет, {username}! 👋\n\n"
-            f"Ваш профиль уже настроен.\n"
-            f"Используйте меню ниже для навигации.",
+            f"👋 Привет, {html.escape(username)}!\n\n"
+            f"Твой профиль уже настроен.\n"
+            f"Используй меню ниже для навигации 👇",
             reply_markup=get_main_menu_keyboard()
         )
         await state.clear()
         return
 
+    # Профиль не заполнен - начинаем онбординг
     await state.set_state(OnboardingStates.waiting_for_role)
     await state.update_data(
         telegram_id=telegram_id,
@@ -92,7 +97,12 @@ async def cmd_start(message: Message, state: FSMContext):
 
 
 async def ask_role(target: Message | CallbackQuery, state: FSMContext):
-    text = f"👋 Привет!\n\nЯ помогу тебе настроить профиль для поиска работы.\nЭто займет всего 2-3 минуты.\n\nДавай начнем! 🚀"
+    text = (
+        "👋 <b>Привет!</b>\n\n"
+        "Я помогу тебе настроить профиль для поиска работы.\n"
+        "Это займет всего 2-3 минуты.\n\n"
+        "Давай начнем! 🚀"
+    )
     builder = InlineKeyboardBuilder()
     builder.button(text="🚀 Начать настройку", callback_data="ask_role")
 
@@ -101,7 +111,6 @@ async def ask_role(target: Message | CallbackQuery, state: FSMContext):
         text,
         reply_markup=builder.as_markup(),
     )
-
     await state.update_data(current_message_id=message.message_id)
 
 
@@ -109,22 +118,35 @@ async def ask_role(target: Message | CallbackQuery, state: FSMContext):
 async def start_role_input(callback: CallbackQuery, state: FSMContext):
     msg = await send_or_edit_message(
         callback,
-        "📝Напиши свою желаемую должность:\n\nНапример: Python Developer, UX Designer, Project Manager"
+        "📝 Напиши свою желаемую должность:\n\n"
+        "<i>Например: Python Developer, UX Designer, Project Manager</i>"
     )
     await state.update_data(current_message_id=msg.message_id)
     await state.set_state(OnboardingStates.waiting_for_role)
+    await callback.answer()
 
 
 @router.message(OnboardingStates.waiting_for_role)
-async def process_role(message: Message, state: FSMContext,bot: Bot):
+async def process_role(message: Message, state: FSMContext, bot: Bot):
     role = message.text.strip()
+
     if len(role) < 2:
         await message.answer("⚠️ Роль слишком короткая. Попробуй еще раз:")
         return
+
+    try:
+        await message.delete()
+    except:
+        pass
+
     data = await state.get_data()
-    await bot.delete_message(message.chat.id, data['current_message_id'])
+    if data.get('current_message_id'):
+        try:
+            await bot.delete_message(message.chat.id, data['current_message_id'])
+        except:
+            pass
+
     await state.update_data(role=role)
-    await message.delete()
     await ask_level(message, state)
 
 

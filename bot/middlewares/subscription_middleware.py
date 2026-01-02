@@ -1,6 +1,6 @@
 from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
-from aiogram.types import TelegramObject, Update, Message, CallbackQuery
+from aiogram.types import TelegramObject, Message, CallbackQuery
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from services.api_client import api
 import logging
@@ -9,8 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class SubscriptionMiddleware(BaseMiddleware):
-    WHITELIST_COMMANDS = ['/start', '/help']
-    WHITELIST_CALLBACKS = ['check_subscription', 'ask_role']
+    WHITELIST_CALLBACKS = ['check_subscription']
 
     async def __call__(
             self,
@@ -21,10 +20,6 @@ class SubscriptionMiddleware(BaseMiddleware):
         if isinstance(event, Message):
             user_id = event.from_user.id
             chat_id = event.chat.id
-
-            if event.text and any(event.text.startswith(cmd) for cmd in self.WHITELIST_COMMANDS):
-                return await handler(event, data)
-
         elif isinstance(event, CallbackQuery):
             user_id = event.from_user.id
             chat_id = event.message.chat.id
@@ -41,26 +36,20 @@ class SubscriptionMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         not_subscribed = []
-
         for channel in required_channels:
             try:
                 member = await bot.get_chat_member(
                     chat_id=channel['channel_id'],
                     user_id=user_id
                 )
-
                 if member.status in ['left', 'kicked']:
                     not_subscribed.append(channel)
-
             except Exception as e:
-                logger.error(f"Error checking subscription for channel {channel['channel_id']}: {e}")
+                logger.error(f"Ошибка проверки подписки на {channel['channel_id']}: {e}")
                 not_subscribed.append(channel)
 
         if not_subscribed:
-            await self._send_subscription_required(
-                event=event,
-                channels=not_subscribed
-            )
+            await self._send_subscription_required(event, not_subscribed)
             return
 
         return await handler(event, data)
@@ -73,33 +62,33 @@ class SubscriptionMiddleware(BaseMiddleware):
         text = "🔒 <b>Доступ ограничен</b>\n\n"
         text += "Для использования бота необходимо подписаться на:\n\n"
 
+        builder = InlineKeyboardBuilder()
+
         for i, channel in enumerate(channels, 1):
             username = channel.get('username', '').replace('@', '')
             if username:
                 text += f"{i}. <a href='https://t.me/{username}'>{channel['title']}</a>\n"
+                builder.button(
+                    text=f"📢 {channel['title']}",
+                    url=f"https://t.me/{username}"
+                )
             else:
                 text += f"{i}. {channel['title']}\n"
 
         text += "\n👇 Подпишитесь и нажмите кнопку ниже"
 
-        builder = InlineKeyboardBuilder()
-
-        for channel in channels:
-            username = channel.get('username', '').replace('@', '')
-            if username:
-                builder.button(
-                    text=f"📢 {channel['title']}",
-                    url=f"https://t.me/{username}"
-                )
-
         builder.button(
             text="✅ Проверить подписку",
             callback_data="check_subscription"
         )
-
         builder.adjust(1)
 
         if isinstance(event, Message):
+            try:
+                await event.delete()
+            except:
+                pass
+
             await event.answer(
                 text=text,
                 parse_mode="HTML",
@@ -115,14 +104,11 @@ class SubscriptionMiddleware(BaseMiddleware):
                     disable_web_page_preview=True
                 )
             except:
+                await event.message.delete()
                 await event.message.answer(
                     text=text,
                     parse_mode="HTML",
                     reply_markup=builder.as_markup(),
                     disable_web_page_preview=True
                 )
-
-            await event.answer(
-                "⚠️ Подпишитесь на канал",
-                show_alert=False
-            )
+            await event.answer("⚠️ Необходима подписка", show_alert=False)

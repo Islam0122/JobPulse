@@ -1,0 +1,6 @@
+INFO 2026-01-02 20:59:52,534 Cache cleared successfully
+INFO 2026-01-02 20:59:52,546 Sending notification to maria_dev: Daily digest
+INFO 2026-01-02 20:59:52,548 Sending notification to jane_smith: Daily digest
+INFO 2026-01-02 20:59:52,548 Sending notification to peter_code: Daily digest
+INFO 2026-01-02 20:59:52,554 Sending notification to alex_tech: Daily digest
+INFO 2026-01-02 20:59:52,555 Sending notification to john_doe: Daily digest
