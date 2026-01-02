@@ -2,16 +2,33 @@ import aiohttp
 import config
 from typing import Optional, Dict, List
 import logging
+from functools import lru_cache
+import time
 
 logger = logging.getLogger(__name__)
 
 
-class APIClient:
-    """Клиент для работы с Django REST API"""
 
+class APIClient:
     def __init__(self):
         self.base_url = config.BACKEND_URL
         self.timeout = aiohttp.ClientTimeout(total=config.API_TIMEOUT)
+        self._channels_cache = None
+        self._channels_cache_time = 0
+        self.CACHE_TTL = 300
+
+    async def get_required_channels(self) -> List[Dict]:
+        now = time.time()
+        if self._channels_cache and (now - self._channels_cache_time) < self.CACHE_TTL:
+            return self._channels_cache
+
+        result = await self._make_request("GET", "required-channels/")
+        channels = result.get("results", []) if result else []
+        self._channels_cache = channels
+        self._channels_cache_time = now
+
+        return channels
+
 
     async def _make_request(
             self,
@@ -84,5 +101,4 @@ class APIClient:
         return result.get("results", []) if result else []
 
 
-# Singleton instance
 api = APIClient()

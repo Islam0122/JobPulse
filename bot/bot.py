@@ -4,7 +4,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 import config
 
-from handlers import start, profile, echo
+from handlers import start, profile, echo, subscription
+from middlewares.subscription_middleware import SubscriptionMiddleware
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,6 +23,11 @@ async def main():
 
     dp = Dispatcher(storage=storage)
 
+
+    dp.message.middleware(SubscriptionMiddleware())
+    dp.callback_query.middleware(SubscriptionMiddleware())
+
+    dp.include_router(subscription.router)
     dp.include_router(start.router)
     dp.include_router(profile.router)
     dp.include_router(echo.router)
@@ -29,6 +35,7 @@ async def main():
     logger.info("🤖 Бот запущен и готов к работе!")
     logger.info(f"📡 Backend API: {config.BACKEND_URL}")
     logger.info(f"🔴 Redis: {config.REDIS_HOST}:{config.REDIS_PORT}")
+    logger.info("🔐 Middleware проверки подписки активирован")
 
     try:
         await bot.delete_webhook(drop_pending_updates=True)

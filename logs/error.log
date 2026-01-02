@@ -109,3 +109,419 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError: 'StackViewSet' should either include a `queryset` attribute, or override the `get_queryset()` method.
 ERROR 2026-01-01 16:48:43,987 basehttp 6256 6160035840 "GET /api/stacks/ HTTP/1.1" 500 126664
+ERROR 2026-01-02 20:43:46,115 signal 1900 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x1053f1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:43:46,117 signal 1903 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x1027f1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:43:46,117 signal 1900 8654178368 Signal handler <promise@0x1053f4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x1053f1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:43:46,118 signal 1903 8654178368 Signal handler <promise@0x1027f4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x1027f1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:56:55,388 signal 2340 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x1032f1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:56:55,390 signal 2331 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x106ce5a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:56:55,391 signal 2331 8654178368 Signal handler <promise@0x106ce8690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x106ce5160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:56:55,391 signal 2340 8654178368 Signal handler <promise@0x1032f4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x1032f1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:57:37,549 signal 2456 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x1024c1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:57:37,549 signal 2467 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x106f25a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:57:37,551 signal 2467 8654178368 Signal handler <promise@0x106f28690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x106f25160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:57:37,551 signal 2456 8654178368 Signal handler <promise@0x1024c4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x1024c1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:58:10,837 signal 2689 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x1071f1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:58:10,837 signal 2694 8654178368 Signal handler <bound method DjangoFixup.on_import_modules of <celery.fixups.django.DjangoFixup object at 0x106cf1a90>> raised: ModuleNotFoundError("No module named 'django_filters'")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 100, in on_import_modules
+    self.worker_fixup.validate_models()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 138, in validate_models
+    self.django_setup()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 134, in django_setup
+    django.setup()
+    ~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 91, in populate
+    app_config = AppConfig.create(entry)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/config.py", line 193, in create
+    import_module(entry)
+    ~~~~~~~~~~~~~^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/importlib/__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1324, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'django_filters'
+ERROR 2026-01-02 20:58:10,838 signal 2689 8654178368 Signal handler <promise@0x1071f4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x1071f1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
+ERROR 2026-01-02 20:58:10,838 signal 2694 8654178368 Signal handler <promise@0x106cf4690 --> <bound method Celery._autodiscover_tasks of <Celery jobpulse at 0x106cf1160>>> raised: AppRegistryNotReady("Apps aren't loaded yet.")
+Traceback (most recent call last):
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/utils/dispatch/signal.py", line 276, in send
+    response = receiver(signal=self, sender=sender, **named)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 161, in __call__
+    return self.throw()
+           ~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/vine/promises.py", line 158, in __call__
+    retval = fun(*final_args, **final_kwargs)
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 694, in _autodiscover_tasks
+    return self._autodiscover_tasks_from_fixups(related_name)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/app/base.py", line 706, in _autodiscover_tasks_from_fixups
+    for pkg in fixup.autodiscover_tasks()
+               ~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/celery/fixups/django.py", line 110, in autodiscover_tasks
+    return [config.name for config in apps.get_app_configs()]
+                                      ~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 147, in get_app_configs
+    self.check_apps_ready()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/islam/Dev2/JobPulse/backend/venv/lib/python3.13/site-packages/django/apps/registry.py", line 138, in check_apps_ready
+    raise AppRegistryNotReady("Apps aren't loaded yet.")
+django.core.exceptions.AppRegistryNotReady: Apps aren't loaded yet.
