@@ -1,4 +1,4 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.types import Message,FSInputFile,CallbackQuery
 from services.api_client import api
 from keyboards.onboarding_kb import *
@@ -99,6 +99,46 @@ HELP_TEXT = """
 async def show_help(callback: CallbackQuery):
     await callback.message.edit_caption(
         caption=HELP_TEXT,
+        parse_mode="HTML",
+        reply_markup=get_return_keyboard()
+    )
+    await callback.answer()
+
+
+@router.callback_query(F.data == "sponsors:info")
+async def sponsors_info_callback(callback: CallbackQuery):
+    channels = await api.get_required_channels()
+
+
+
+    text = (
+        "💡 <b>Почему нужна подписка?</b>\n\n"
+        "Этот бот полностью <b>бесплатный</b>.\n"
+        "Он работает и развивается благодаря поддержке\n"
+        "<b>каналов-спонсоров</b>.\n\n"
+        "📌 Подписка позволяет:\n"
+        "• поддерживать серверы и разработку\n"
+        "• сохранять доступ ко всем функциям\n"
+        "• избегать платных подписок\n\n"
+        "📢 <b>Наши спонсоры:</b>\n"
+    )
+
+    if channels:
+        for ch in channels:
+            title = ch["title"]
+            username = ch.get("username")
+
+            if username:
+                text += f"• <b>{title}</b> — {username}\n"
+            else:
+                text += f"• <b>{title}</b>\n"
+    else:
+        text += "• Сейчас нет активных спонсоров\n"
+
+    text += "\n🙏 Спасибо за поддержку проекта!"
+
+    await callback.message.edit_caption(
+        caption=text,
         parse_mode="HTML",
         reply_markup=get_return_keyboard()
     )
