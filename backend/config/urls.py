@@ -14,6 +14,8 @@ urlpatterns = [
 
     # API endpoints
     path('api/', include('apps.users.urls')),
+    path("api/", include("apps.channels.urls")),
+
 ]
 
 if settings.DEBUG:
