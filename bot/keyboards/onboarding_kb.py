@@ -176,7 +176,6 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     buttons = [
         ("📊 Мой профиль", "menu:profile"),
         ("🔔 Настройки", "menu:settings"),
-        ("✏️ Редактировать", "menu:edit"),
         ("❓ Помощь", "menu:help"),
         ("💡 Почему бот бесплатный?", "sponsors:info"),
 
@@ -185,7 +184,7 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     for text, cb in buttons:
         builder.button(text=text, callback_data=cb)
 
-    builder.adjust(2)
+    builder.adjust(2,1)
     return builder.as_markup()
 
 

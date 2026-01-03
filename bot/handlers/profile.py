@@ -209,15 +209,3 @@ async def update_notifications_callback(callback: CallbackQuery):
     else:
         await callback.answer("❌ Ошибка обновления настроек", show_alert=True)
 
-
-@router.message(F.text == "✏️ Редактировать профиль")
-async def edit_profile(message: Message):
-    await message.answer(
-        "✏️ <b>Редактирование профиля</b>\n\n"
-        "Чтобы изменить профиль, используй /start заново.\n"
-        "Твои текущие данные будут обновлены.",
-        parse_mode="HTML",
-        reply_markup=get_main_menu_keyboard()
-    )
-
-
