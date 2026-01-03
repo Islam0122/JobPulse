@@ -50,30 +50,41 @@ class UserViewSet(viewsets.ModelViewSet):
             return UserWriteSerializer
         return UserReadSerializer
 
+    def get_queryset(self):
+        return User.objects.prefetch_related(
+            'stack',
+            'work_formats',
+            'employment_types'
+        )
+
     def retrieve(self, request, telegram_id=None):
-        """Получить пользователя с кэшированием"""
-        # Пытаемся получить из кэша
         cached_user = UserCache.get_user(telegram_id)
         if cached_user:
             return Response(cached_user)
-
-        # Если нет в кэше, получаем из БД
-        user = get_object_or_404(User, telegram_id=telegram_id)
+        user = get_object_or_404(self.get_queryset(), telegram_id=telegram_id)
         serializer = self.get_serializer(user)
 
-        # Сохраняем в кэш
         UserCache.set_user(telegram_id, serializer.data)
-
         return Response(serializer.data)
 
     def update(self, request, telegram_id=None):
-        """Обновление с очисткой кэша"""
-        response = super().update(request, telegram_id)
+        user = get_object_or_404(self.get_queryset(), telegram_id=telegram_id)
+        serializer = self.get_serializer(user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         UserCache.delete_user(telegram_id)
-        return response
+        return Response(serializer.data)
+
+    def partial_update(self, request, telegram_id=None):
+        user = get_object_or_404(self.get_queryset(), telegram_id=telegram_id)
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        UserCache.delete_user(telegram_id)
+        read_serializer = UserReadSerializer(user)
+        return Response(read_serializer.data)
 
     def destroy(self, request, telegram_id=None):
-        """Удаление с очисткой кэша"""
         response = super().destroy(request, telegram_id)
         UserCache.delete_user(telegram_id)
         return response
@@ -82,28 +93,8 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-
         read_serializer = UserReadSerializer(user)
-        return Response(
-            read_serializer.data,
-            status=status.HTTP_201_CREATED
-        )
-
-
-    def partial_update(self, request, telegram_id=None):
-        user = get_object_or_404(User, telegram_id=telegram_id)
-        serializer = self.get_serializer(
-            user,
-            data=request.data,
-            partial=True
-        )
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-
-        read_serializer = UserReadSerializer(user)
-        return Response(read_serializer.data)
-
-
+        return Response(read_serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=['post'])
     def complete_onboarding(self, request, telegram_id=None):
@@ -111,7 +102,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user.is_profile_completed = True
         user.onboarding_step = None
         user.save()
-
+        UserCache.delete_user(telegram_id)
         serializer = UserReadSerializer(user)
         return Response(serializer.data)
 
@@ -125,10 +116,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 {'error': 'Invalid notification mode'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
         user.notify_mode = notify_mode
-        user.save()
-
+        user.save(update_fields=['notify_mode', 'updated_at'])
+        UserCache.delete_user(telegram_id)
         serializer = UserReadSerializer(user)
         return Response(serializer.data)
 
@@ -136,8 +126,8 @@ class UserViewSet(viewsets.ModelViewSet):
     def toggle_active(self, request, telegram_id=None):
         user = get_object_or_404(User, telegram_id=telegram_id)
         user.is_active = not user.is_active
-        user.save()
-
+        user.save(update_fields=['is_active', 'updated_at'])
+        UserCache.delete_user(telegram_id)
         serializer = UserReadSerializer(user)
         return Response(serializer.data)
 

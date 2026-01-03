@@ -145,45 +145,69 @@ async def sponsors_info_callback(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.message(F.text == "🔔 Настройки уведомлений")
-async def notification_settings(message: Message):
-    telegram_id = message.from_user.id
+@router.callback_query(F.data == "menu:settings")
+async def notification_settings_callback(callback: CallbackQuery):
+    telegram_id = callback.from_user.id
     user = await api.get_user(telegram_id)
 
     if not user:
-        await message.answer("❌ Профиль не найден.")
+        await callback.answer("❌ Профиль не найден.", show_alert=True)
         return
 
-    from keyboards.onboarding_kb import get_notification_mode_keyboard
+    try:
+        await callback.message.edit_caption(
+            caption=f"🔔 <b>Настройки уведомлений</b>\n\n"
+                    f"<b>Текущий режим:</b> {user.get('notify_mode_label')}\n\n"
+                    f"Выбери новый режим:",
+            parse_mode="HTML",
+            reply_markup=get_notification_mode_keyboard2()
+        )
+    except Exception as e:
+        await callback.message.answer(
+            caption=f"🔔 <b>Настройки уведомлений</b>\n\n"
+                    f"<b>Текущий режим:</b> {user.get('notify_mode_label')}\n\n"
+                    f"Выбери новый режим:",
+            parse_mode="HTML",
+            reply_markup=get_notification_mode_keyboard2()
+        )
 
-    await message.answer(
-        f"🔔 <b>Текущий режим:</b> {user.get('notify_mode_label')}\n\n"
-        f"Выбери новый режим:",
-        parse_mode="HTML",
-        reply_markup=get_notification_mode_keyboard()
-    )
+    await callback.answer()
 
 
-@router.message(F.text.in_(["Сразу 🔔", "Ежедневно 📅", "Еженедельно 📆"]))
-async def update_notifications(message: Message):
-    mode_map = {
-        "Сразу 🔔": "instant",
-        "Ежедневно 📅": "daily",
-        "Еженедельно 📆": "weekly"
+@router.callback_query(F.data.startswith("notify:"))
+async def update_notifications_callback(callback: CallbackQuery):
+    notify_mode = callback.data.split(":")[1]  # instant, daily, weekly
+    telegram_id = callback.from_user.id
+
+    mode_labels = {
+        "instant": "Сразу 🔔",
+        "daily": "Ежедневно 📅",
+        "weekly": "Еженедельно 📆"
     }
-
-    notify_mode = mode_map.get(message.text)
-    telegram_id = message.from_user.id
 
     result = await api.update_notification_mode(telegram_id, notify_mode)
 
     if result:
-        await message.answer(
-            f"✅ Режим уведомлений изменен на: {message.text}",
-            reply_markup=get_main_menu_keyboard()
-        )
+        mode_label = mode_labels.get(notify_mode, notify_mode)
+
+        try:
+            await callback.message.edit_caption(
+                caption=f"✅ <b>Настройки сохранены!</b>\n\n"
+                        f"Режим уведомлений: {mode_label}",
+                parse_mode="HTML",
+                reply_markup=get_return_keyboard()
+            )
+        except Exception as e:
+            await callback.message.answer(
+                f"✅ <b>Настройки сохранены!</b>\n\n"
+                f"Режим уведомлений: {mode_label}",
+                parse_mode="HTML",
+                reply_markup=get_return_keyboard()
+            )
+
+        await callback.answer(f"✅ Режим изменен на: {mode_label}")
     else:
-        await message.answer("❌ Ошибка обновления настроек.")
+        await callback.answer("❌ Ошибка обновления настроек", show_alert=True)
 
 
 @router.message(F.text == "✏️ Редактировать профиль")

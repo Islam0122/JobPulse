@@ -135,6 +135,32 @@ def get_notification_mode_keyboard() -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
+def get_notification_mode_keyboard2() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+
+    modes = [
+        ("Сразу 🔔", "notify:instant"),
+        ("Ежедневно 📅", "notify:daily"),
+        ("Еженедельно 📆", "notify:weekly"),
+    ]
+
+    for text, callback_data in modes:
+        builder.button(
+            text=text,
+            callback_data=callback_data
+        )
+
+    builder.adjust(1)
+
+    builder.row(
+        InlineKeyboardButton(
+            text="⬅️ Назад",
+            callback_data="menu:home"
+        )
+    )
+
+    return builder.as_markup()
+
 def get_skip_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(
@@ -149,7 +175,7 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
 
     buttons = [
         ("📊 Мой профиль", "menu:profile"),
-        ("🔔 Настройки", "menu:notifications"),
+        ("🔔 Настройки", "menu:settings"),
         ("✏️ Редактировать", "menu:edit"),
         ("❓ Помощь", "menu:help"),
         ("💡 Почему бот бесплатный?", "sponsors:info"),
