@@ -122,6 +122,7 @@ SIMPLE_JWT = {
 }
 
 from .cors import *
+from .redis import *
 
 JAZZMIN_SETTINGS = {
     "show_ui_builder": True,

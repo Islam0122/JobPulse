@@ -9,12 +9,9 @@ import dj_database_url
 import os
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True,  # если Railway требует SSL
-    )
+    'default': dj_database_url.config(default='postgres://USER:PASSWORD@HOST:PORT/DBNAME')
 }
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
