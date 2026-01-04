@@ -6,9 +6,14 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("PGHOST", default="db"),
+        "USER": env("PGUSER", default="postgres"),
+        "NAME": env("PGDATABASE", default="postgres"),
+        "PASSWORD": env("PGPASSWORD", default="postgres"),
+        "PORT": env("PGPORT", default=5432),
+        "CONN_MAX_AGE": 60,
     }
 }
 
