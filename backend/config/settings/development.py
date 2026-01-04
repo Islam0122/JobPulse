@@ -5,21 +5,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": env("PGHOST", default="db"),
-        "USER": env("PGUSER", default="postgres"),
-        "NAME": env("PGDATABASE", default="postgres"),
-        "PASSWORD": env("PGPASSWORD", default="postgres"),
-        "PORT": env("PGPORT", default=5432),
-        "CONN_MAX_AGE": 60,
-    }
-}
+import dj_database_url
+import os
 
-INSTALLED_APPS += [
-    'debug_toolbar',
-]
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,  # если Railway требует SSL
+    )
+}
 
 MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
