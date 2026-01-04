@@ -17,9 +17,7 @@ logger = logging.getLogger(__name__)
 async def main():
     bot = Bot(token=config.BOT_TOKEN)
 
-    storage = RedisStorage.from_url(
-        f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}/{config.REDIS_DB}"
-    )
+    storage = config.REDIS_URL
 
     dp = Dispatcher(storage=storage)
 
