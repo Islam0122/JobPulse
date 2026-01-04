@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Apps
     'apps.users',
     'apps.channels',
+    'apps.vacancies',
     'apps.broadcastprompt',
 
 ]
@@ -164,17 +165,41 @@ SPECTACULAR_SETTINGS = {
 from .redis import *
 from celery.schedules import crontab
 
+
 CELERY_BEAT_SCHEDULE = {
+    # Парсинг вакансий каждые 10 минут
+    'parse-hh-vacancies': {
+        'task': 'apps.vacancies.tasks.parse_hh_vacancies',
+        'schedule': crontab(minute='*/10'),
+    },
+
+    # Деактивация старых вакансий каждую ночь
+    'deactivate-old-vacancies': {
+        'task': 'apps.vacancies.tasks.deactivate_old_vacancies',
+        'schedule': crontab(hour=2, minute=0),
+    },
+
+    # Очистка старых логов раз в неделю
+    'cleanup-old-logs': {
+        'task': 'apps.vacancies.tasks.cleanup_old_logs',
+        'schedule': crontab(day_of_week=1, hour=3, minute=0),
+    },
+
+    # Ежедневные уведомления пользователям
     'send-daily-notifications': {
         'task': 'apps.users.tasks.send_daily_notifications',
-        'schedule': crontab(hour=9, minute=0),  # Каждый день в 9:00
+        'schedule': crontab(hour=9, minute=0),
     },
+
+    # Очистка кеша каждую ночь
     'clear-cache-midnight': {
         'task': 'apps.users.tasks.clear_expired_cache',
-        'schedule': crontab(hour=0, minute=0),  # Каждый день в полночь
+        'schedule': crontab(hour=0, minute=0),
     },
+
+    # Обновление статистики каждые 30 минут
     'update-statistics': {
         'task': 'apps.users.tasks.update_user_statistics',
-        'schedule': crontab(minute='*/30'),  # Каждые 30 минут
+        'schedule': crontab(minute='*/30'),
     },
 }
