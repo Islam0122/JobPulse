@@ -71,11 +71,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("PGHOST", default="db"),
+        "USER": env("PGUSER", default="postgres"),
+        "NAME": env("PGDATABASE", default="postgres"),
+        "PASSWORD": env("PGPASSWORD", default="postgres"),
+        "PORT": env("PGPORT", default=5432),
+        "CONN_MAX_AGE": 60,
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
