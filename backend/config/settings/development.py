@@ -25,8 +25,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
-LOG_DIR = BASE_DIR.parent / 'logs'
-os.makedirs(LOG_DIR, exist_ok=True)
 
 # LOGGING = {
 #     "version": 1,
