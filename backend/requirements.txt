@@ -17,3 +17,4 @@ redis==5.2.1
 requests==2.32.5
 whitenoise==6.6.0
 dj-database-url==2.1.0
+python-json-logger==2.0.7
