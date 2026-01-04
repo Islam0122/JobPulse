@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-export CELERY_ALLOW_ROOT=1
-
-# Запуск worker
-exec celery -A config worker -l info
+celery -A config worker -l info --without-gossip --without-mingle --without-heartbeat
