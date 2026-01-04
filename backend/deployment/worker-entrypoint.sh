@@ -2,8 +2,5 @@
 set -e
 
 
-celery -A config worker -l info \
-  --concurrency=2 \
-  --without-gossip \
-  --without-mingle \
-  --without-heartbeat
+celery -A config worker -l info --uid 1000 --without-gossip --without-mingle --without-heartbeat
+
