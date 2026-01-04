@@ -5,13 +5,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-import dj_database_url
-
 DATABASES = {
-    "default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": env("PGHOST", default="db"),
+        "USER": env("PGUSER", default="postgres"),
+        "NAME": env("PGDATABASE", default="postgres"),
+        "PASSWORD": env("PGPASSWORD", default="postgres"),
+        "PORT": env("PGPORT", default=5432),
+        "CONN_MAX_AGE": 60,
+    }
 }
 
 
+MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
