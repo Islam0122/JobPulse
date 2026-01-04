@@ -32,7 +32,7 @@ async def main():
 
     logger.info("🤖 Бот запущен и готов к работе!")
     logger.info(f"📡 Backend API: {config.BACKEND_URL}")
-    logger.info(f"🔴 Redis: {config.REDIS_HOST}:{config.REDIS_PORT}")
+    logger.info(f"🔴 Redis: {config.REDIS_URL}")
     logger.info("🔐 Middleware проверки подписки активирован")
 
     try:
