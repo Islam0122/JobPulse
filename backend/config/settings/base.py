@@ -225,10 +225,12 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=0),  # Каждый час
     },
 }
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
 # Дополнительные настройки Celery для оптимизации
 CELERY_TASK_ACKS_LATE = True  # Подтверждать задачу после выполнения
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Не загружать много задач заранее
 CELERY_TASK_REJECT_ON_WORKER_LOST = True  # Повторить при потере worker
 CELERY_TASK_ALWAYS_EAGER = False  # Не выполнять синхронно в development
-
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
