@@ -172,6 +172,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'apps.vacancies.tasks.parse_hh_vacancies',
         'schedule': crontab(minute='*/10'),
     },
+'notify-new-vacancies': {
+    'task': 'apps.vacancies.tasks.notify_users_about_new_vacancies',
+    'schedule': crontab(minute='*/10'),
+},
 
     # Деактивация старых вакансий каждую ночь
     'deactivate-old-vacancies': {

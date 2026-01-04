@@ -30,8 +30,8 @@ def match_vacancy_to_users(vacancy: Vacancy):
     for user in users:
         score = calculate_match_score(user, vacancy)
 
-        # Отправляем только если совпадение >= 60%
-        if score >= 60:
+        # Отправляем только если совпадение >= 10%
+        if score >= 10:
             matched_users.append(user)
             logger.info(
                 f"✅ Вакансия '{vacancy.title}' подходит "
@@ -107,43 +107,38 @@ def calculate_match_score(user: User, vacancy: Vacancy) -> int:
 
 
 def send_vacancy_notification(user: User, vacancy: Vacancy) -> bool:
-    """
-    Отправка уведомления о вакансии пользователю в Telegram
-
-    Returns:
-        bool: True если отправка успешна
-    """
     if not user.telegram_id:
         logger.warning(f"У пользователя {user.id} нет telegram_id")
         return False
 
     bot_token = settings.BOT_TOKEN
     if not bot_token:
-        logger.error("BOT_TOKEN не найден в настройках")
+        logger.error("BOT_TOKEN не найден")
         return False
 
     message = format_vacancy_message(vacancy)
+
+    # Telegram лимит 4096 символов
+    message = message[:4000]
+
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
 
     payload = {
         "chat_id": user.telegram_id,
         "text": message,
         "parse_mode": "HTML",
-        "disable_web_page_preview": False,
+        "disable_web_page_preview": True,
     }
 
     try:
-        response = requests.post(
-            f"https://api.telegram.org/bot{bot_token}/sendMessage",
-            json=payload,
-            timeout=10
-        )
+        response = requests.post(url, json=payload, timeout=10)
         response.raise_for_status()
-
-        logger.info(f"✅ Уведомление отправлено {user.telegram_id}")
         return True
 
     except requests.RequestException as e:
-        logger.error(f"❌ Ошибка отправки уведомления {user.telegram_id}: {e}")
+        logger.error(
+            f"❌ Ошибка отправки уведомления {user.telegram_id}: {e}"
+        )
         return False
 
 
