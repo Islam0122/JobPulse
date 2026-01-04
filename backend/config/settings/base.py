@@ -162,48 +162,61 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'JobPulse',
     'VERSION': '1.0.0',
 }
-from .redis import *
 from celery.schedules import crontab
 
-
+# Оптимизированное расписание Celery Beat
 CELERY_BEAT_SCHEDULE = {
-    # Парсинг вакансий каждые 10 минут
+    # Парсинг вакансий каждые 30 минут (оптимально для HH.ru)
     'parse-hh-vacancies': {
         'task': 'apps.vacancies.tasks.parse_hh_vacancies',
-        'schedule': crontab(minute='*/10'),
+        'schedule': crontab(minute='*/30'),  # Каждые 30 минут
+        'options': {
+            'expires': 1800,  # Задача истекает через 30 минут
+        }
     },
-'notify-new-vacancies': {
-    'task': 'apps.vacancies.tasks.notify_users_about_new_vacancies',
-    'schedule': crontab(minute='*/10'),
-},
 
-    # Деактивация старых вакансий каждую ночь
+    # Рассылка уведомлений каждые 15 минут
+    'notify-new-vacancies': {
+        'task': 'apps.vacancies.tasks.notify_users_about_new_vacancies',
+        'schedule': crontab(minute='*/15'),
+        'options': {
+            'expires': 900,
+        }
+    },
+
+    # Деактивация старых вакансий каждую ночь в 2:00
     'deactivate-old-vacancies': {
         'task': 'apps.vacancies.tasks.deactivate_old_vacancies',
         'schedule': crontab(hour=2, minute=0),
     },
 
-    # Очистка старых логов раз в неделю
+    # Очистка старых логов раз в неделю (понедельник в 3:00)
     'cleanup-old-logs': {
         'task': 'apps.vacancies.tasks.cleanup_old_logs',
         'schedule': crontab(day_of_week=1, hour=3, minute=0),
     },
 
-    # Ежедневные уведомления пользователям
+    # Ежедневные уведомления пользователям в 9:00
     'send-daily-notifications': {
         'task': 'apps.users.tasks.send_daily_notifications',
         'schedule': crontab(hour=9, minute=0),
     },
 
-    # Очистка кеша каждую ночь
+    # Очистка кеша каждую ночь в 00:00
     'clear-cache-midnight': {
         'task': 'apps.users.tasks.clear_expired_cache',
         'schedule': crontab(hour=0, minute=0),
     },
 
-    # Обновление статистики каждые 30 минут
+    # Обновление статистики каждый час
     'update-statistics': {
         'task': 'apps.users.tasks.update_user_statistics',
-        'schedule': crontab(minute='*/30'),
+        'schedule': crontab(minute=0),  # Каждый час
     },
 }
+
+# Дополнительные настройки Celery для оптимизации
+CELERY_TASK_ACKS_LATE = True  # Подтверждать задачу после выполнения
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Не загружать много задач заранее
+CELERY_TASK_REJECT_ON_WORKER_LOST = True  # Повторить при потере worker
+CELERY_TASK_ALWAYS_EAGER = False  # Не выполнять синхронно в development
