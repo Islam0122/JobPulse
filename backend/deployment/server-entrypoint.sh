@@ -13,7 +13,7 @@ if [ "$RUN_MIGRATIONS" = "True" ]; then
 fi
 
 echo "Starting app server..."
-python -m gunicorn railway_django_stack.wsgi:application \
+python -m gunicorn config.wsgi:application \
     --bind 0.0.0.0:8000 \
     --log-level info \
     --config python:deployment.gunicorn_config \
