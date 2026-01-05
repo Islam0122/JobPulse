@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = [env.str("ALLOWED_HOST", default="localhost")]
+ALLOWED_HOSTS = [env.str("ALLOWED_HOST"),]
 
 DATABASES = {
     "default": {
@@ -14,9 +14,7 @@ DATABASES = {
         "CONN_MAX_AGE": 60,
     }
 }
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = env.int('EMAIL_PORT', default=587)
