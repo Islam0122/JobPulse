@@ -360,8 +360,8 @@ def notify_users_about_new_vacancies(self):
                 user for user in active_users
                 if user.telegram_id not in already_notified
             ]
-
-            matched_users = match_vacancy_to_users(vacancy)
+            from .services import match_vacancy_to_users_v2
+            matched_users = match_vacancy_to_users_v2(vacancy)
             matched_users = [
                                 u for u in matched_users
                                 if u.telegram_id not in already_notified

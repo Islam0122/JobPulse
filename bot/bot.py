@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 import config
 
-from handlers import start, profile, echo, subscription
+from handlers import start, profile, echo, subscription,insights,vacancies
 from middlewares.subscription_middleware import SubscriptionMiddleware
 
 logging.basicConfig(
@@ -28,7 +28,10 @@ async def main():
     dp.include_router(subscription.router)
     dp.include_router(start.router)
     dp.include_router(profile.router)
+    dp.include_router(vacancies.router)
+    dp.include_router(insights.router)
     dp.include_router(echo.router)
+
 
     logger.info("🤖 Бот запущен и готов к работе!")
     logger.info(f"📡 Backend API: {config.BACKEND_URL}")
