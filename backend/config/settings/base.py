@@ -131,40 +131,72 @@ from .cors import *
 from .redis import *
 
 JAZZMIN_SETTINGS = {
-    "show_ui_builder": True,
-}
+    'site_header': "JobPluse",
+    'site_brand': "JobPluse",
+    'copyright': "All Rights Reserved 2026",
+    "welcome_sign": "Welcome to JobPluse Admin Panel!",
 
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index"},
+        {"name": "Users", "url": "/admin/users/user/"},
+        {"name": "Vacancies", "url": "/admin/vacancies/vacancy/"},
+    ],
+
+    "order_with_respect_to": [
+        "users.User",
+        "vacancies.Vacancy",
+        "vacancies.Stack",
+        "vacancies.WorkFormat",
+        "vacancies.EmploymentType",
+        "broadcastprompt.BroadcastMessage",
+        "broadcastprompt.RequiredChannel",
+    ],
+
+    "icons": {
+        "users.User": "fas fa-user",
+        "vacancies.Vacancy": "fas fa-briefcase",
+        "vacancies.Stack": "fas fa-laptop-code",
+        "vacancies.WorkFormat": "fas fa-building",
+        "vacancies.EmploymentType": "fas fa-clock",
+        "broadcastprompt.BroadcastMessage": "fas fa-bullhorn",
+        "broadcastprompt.RequiredChannel": "fas fa-tv",
+    },
+
+    "show_ui_builder": True
+}
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
     "body_small_text": True,
     "brand_small_text": False,
     "brand_colour": False,
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
+    "accent": "accent-navy",
+    "navbar": "navbar-white navbar-light",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-teal",
+    "sidebar": "sidebar-dark-info",
     "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": False,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": False,
-    "theme": "litera",
-    "dark_mode_theme": "cyborg",
+    "theme": "lumen",
+    "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
         "info": "btn-info",
-        "warning": "btn-outline-warning",
+        "warning": "btn-warning",
         "danger": "btn-danger",
         "success": "btn-success"
     }
 }
+
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'JobPulse',
@@ -224,10 +256,9 @@ CELERY_BEAT_SCHEDULE = {
 }
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
-# Дополнительные настройки Celery для оптимизации
-CELERY_TASK_ACKS_LATE = True  # Подтверждать задачу после выполнения
-CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Не загружать много задач заранее
-CELERY_TASK_REJECT_ON_WORKER_LOST = True  # Повторить при потере worker
-CELERY_TASK_ALWAYS_EAGER = False  # Не выполнять синхронно в development
+CELERY_TASK_ACKS_LATE = True
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_TASK_ALWAYS_EAGER = False
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
