@@ -4,6 +4,7 @@ from typing import List, Dict
 
 
 def get_level_keyboard() -> InlineKeyboardMarkup:
+    """Клавиатура выбора уровня"""
     builder = InlineKeyboardBuilder()
     levels = ["Junior", "Middle", "Senior", "Lead"]
 
@@ -13,26 +14,35 @@ def get_level_keyboard() -> InlineKeyboardMarkup:
             callback_data=f"level:{level.lower()}"
         )
 
-    builder.adjust(2)
+    builder.adjust(2)  # 2 кнопки в ряд
     return builder.as_markup()
 
 
 def get_stack_keyboard(
-    stacks: List[Dict],
-    selected: List[int] | None = None
+        stacks: List[Dict],
+        selected: List[int] | None = None
 ) -> InlineKeyboardMarkup:
+    """
+    Клавиатура выбора технологий
+
+    Args:
+        stacks: Список технологий с сервера
+        selected: ID выбранных технологий
+    """
     selected = selected or []
     builder = InlineKeyboardBuilder()
 
     for stack in stacks:
+        # Добавляем галочку если выбрано
         prefix = "✅ " if stack["id"] in selected else ""
         builder.button(
             text=f"{prefix}{stack['name']}",
             callback_data=f"stack:{stack['id']}"
         )
 
-    builder.adjust(3)
+    builder.adjust(3)  # 3 кнопки в ряд
 
+    # Кнопка "Готово" появляется только если что-то выбрано
     if selected:
         builder.row(
             InlineKeyboardButton(
@@ -45,9 +55,10 @@ def get_stack_keyboard(
 
 
 def get_work_format_keyboard(
-    formats: List[Dict],
-    selected: List[int] | None = None
+        formats: List[Dict],
+        selected: List[int] | None = None
 ) -> InlineKeyboardMarkup:
+    """Клавиатура выбора формата работы"""
     selected = selected or []
     builder = InlineKeyboardBuilder()
 
@@ -58,7 +69,7 @@ def get_work_format_keyboard(
             callback_data=f"workformat:{fmt['id']}"
         )
 
-    builder.adjust(1)
+    builder.adjust(1)  # Вертикально
 
     if selected:
         builder.row(
@@ -72,9 +83,10 @@ def get_work_format_keyboard(
 
 
 def get_employment_type_keyboard(
-    types: List[Dict],
-    selected: List[int] | None = None
+        types: List[Dict],
+        selected: List[int] | None = None
 ) -> InlineKeyboardMarkup:
+    """Клавиатура выбора типа занятости"""
     selected = selected or []
     builder = InlineKeyboardBuilder()
 
@@ -99,6 +111,7 @@ def get_employment_type_keyboard(
 
 
 def get_currency_keyboard() -> InlineKeyboardMarkup:
+    """Клавиатура выбора валюты"""
     builder = InlineKeyboardBuilder()
     currencies = [
         ("USD 💵", "USD"),
@@ -118,6 +131,7 @@ def get_currency_keyboard() -> InlineKeyboardMarkup:
 
 
 def get_notification_mode_keyboard() -> InlineKeyboardMarkup:
+    """Клавиатура выбора режима уведомлений"""
     builder = InlineKeyboardBuilder()
     modes = [
         ("Сразу 🔔", "instant"),
@@ -136,6 +150,7 @@ def get_notification_mode_keyboard() -> InlineKeyboardMarkup:
 
 
 def get_notification_mode_keyboard2() -> InlineKeyboardMarkup:
+    """Клавиатура настроек уведомлений с кнопкой назад"""
     builder = InlineKeyboardBuilder()
 
     modes = [
@@ -161,7 +176,9 @@ def get_notification_mode_keyboard2() -> InlineKeyboardMarkup:
 
     return builder.as_markup()
 
+
 def get_skip_keyboard() -> InlineKeyboardMarkup:
+    """Кнопка пропуска (для необязательных полей)"""
     builder = InlineKeyboardBuilder()
     builder.button(
         text="⏭ Пропустить",
@@ -171,12 +188,16 @@ def get_skip_keyboard() -> InlineKeyboardMarkup:
 
 
 def get_main_menu_keyboard() -> InlineKeyboardMarkup:
+    """
+    Главное меню бота
+    Показывается после успешного онбординга
+    """
     builder = InlineKeyboardBuilder()
 
     buttons = [
         ("💼 Вакансии", "menu:vacancies"),
         ("📊 Мой профиль", "menu:profile"),
-        ("📈 Аналитика", "menu:insights"),   #
+        ("📈 Аналитика", "menu:insights"),
         ("🔔 Настройки", "menu:settings"),
         ("❓ Помощь", "menu:help"),
         ("💡 Почему бот бесплатный?", "sponsors:info"),
@@ -185,8 +206,9 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     for text, cb in buttons:
         builder.button(text=text, callback_data=cb)
 
-    builder.adjust(1, 2, 2, 2)
+    builder.adjust(1, 2, 2, 2)  # Раскладка кнопок
     return builder.as_markup()
+
 
 def get_return_keyboard() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
