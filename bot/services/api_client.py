@@ -2,11 +2,8 @@ import aiohttp
 import config
 from typing import Optional, Dict, List
 import logging
-from functools import lru_cache
-import time
 
 logger = logging.getLogger(__name__)
-
 
 
 class APIClient:
@@ -16,19 +13,6 @@ class APIClient:
         self._channels_cache = None
         self._channels_cache_time = 0
         self.CACHE_TTL = 300
-
-    async def get_required_channels(self) -> List[Dict]:
-        now = time.time()
-        if self._channels_cache and (now - self._channels_cache_time) < self.CACHE_TTL:
-            return self._channels_cache
-
-        result = await self._make_request("GET", "required-channels/")
-        channels = result.get("results", []) if result else []
-        self._channels_cache = channels
-        self._channels_cache_time = now
-
-        return channels
-
 
     async def _make_request(
             self,
@@ -48,7 +32,9 @@ class APIClient:
                         json=data,
                         params=params
                 ) as response:
-                    if response.status in [200, 201]:
+                    if response.status in [200, 201, 204]:
+                        if response.status == 204:
+                            return {"status": "success"}
                         return await response.json()
                     else:
                         logger.error(f"API Error {response.status}: {await response.text()}")
@@ -100,5 +86,124 @@ class APIClient:
         result = await self._make_request("GET", "employment-types/")
         return result.get("results", []) if result else []
 
+    async def get_required_channels(self) -> List[Dict]:
+        """Получить список обязательных каналов"""
+        import time
+        now = time.time()
+        if self._channels_cache and (now - self._channels_cache_time) < self.CACHE_TTL:
+            return self._channels_cache
 
+        result = await self._make_request("GET", "required-channels/")
+        channels = result.get("results", []) if result else []
+        self._channels_cache = channels
+        self._channels_cache_time = now
+
+        return channels
+
+    # ============= VACANCY ENDPOINTS (НОВЫЕ) =============
+
+    async def get_vacancies(self, limit: int = 20, **filters) -> List[Dict]:
+        """
+        Получить список вакансий
+
+        Params:
+        - limit: количество вакансий
+        - location: фильтр по городу
+        - search: поиск по названию/компании
+        """
+        params = {"limit": limit, **filters}
+        result = await self._make_request("GET", "vacancies/", params=params)
+        return result.get("results", []) if result else []
+
+    async def get_recommended_vacancies(
+            self,
+            telegram_id: int,
+            limit: int = 10
+    ) -> List[Dict]:
+        """Получить рекомендованные вакансии для пользователя"""
+        params = {"telegram_id": telegram_id, "limit": limit}
+        result = await self._make_request("GET", "vacancies/recommended/", params=params)
+        return result.get("results", []) if result else []
+
+    async def get_vacancy_detail(self, vacancy_id: int) -> Optional[Dict]:
+        """Получить детальную информацию о вакансии"""
+        return await self._make_request("GET", f"vacancies/{vacancy_id}/")
+
+    async def react_to_vacancy(
+            self,
+            telegram_id: int,
+            vacancy_id: int,
+            reaction: str
+    ) -> Optional[Dict]:
+        """
+        Отреагировать на вакансию
+
+        Args:
+            telegram_id: ID пользователя
+            vacancy_id: ID вакансии
+            reaction: 'like' или 'dislike'
+        """
+        data = {
+            "telegram_id": telegram_id,
+            "reaction": reaction
+        }
+        return await self._make_request("POST", f"vacancies/{vacancy_id}/react/", data=data)
+
+    async def add_to_favorites(
+            self,
+            telegram_id: int,
+            vacancy_id: int,
+            notes: str = ""
+    ) -> Optional[Dict]:
+        """Добавить вакансию в избранное"""
+        data = {
+            "telegram_id": telegram_id,
+            "notes": notes
+        }
+        return await self._make_request(
+            "POST",
+            f"vacancies/{vacancy_id}/add_to_favorites/",
+            data=data
+        )
+
+    async def remove_from_favorites(
+            self,
+            telegram_id: int,
+            vacancy_id: int
+    ) -> Optional[Dict]:
+        """Удалить вакансию из избранного"""
+        params = {"telegram_id": telegram_id}
+        return await self._make_request(
+            "DELETE",
+            f"vacancies/{vacancy_id}/remove_from_favorites/",
+            params=params
+        )
+
+    async def get_favorite_vacancies(self, telegram_id: int) -> List[Dict]:
+        """Получить избранные вакансии пользователя"""
+        params = {"telegram_id": telegram_id}
+        result = await self._make_request("GET", "vacancies/favorites/", params=params)
+        return result.get("results", []) if result else []
+
+    async def get_vacancy_history(self, telegram_id: int) -> List[Dict]:
+        """Получить историю просмотренных вакансий"""
+        params = {"telegram_id": telegram_id}
+        result = await self._make_request("GET", "vacancies/history/", params=params)
+        return result.get("results", []) if result else []
+
+    async def mark_vacancy_viewed(
+            self,
+            telegram_id: int,
+            vacancy_id: int
+    ) -> Optional[Dict]:
+        """Отметить вакансию как просмотренную"""
+        data = {"telegram_id": telegram_id}
+        return await self._make_request(
+            "POST",
+            f"vacancies/{vacancy_id}/mark_viewed/",
+            data=data
+        )
+
+
+# Singleton instance
 api = APIClient()

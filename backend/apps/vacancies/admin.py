@@ -4,7 +4,9 @@ from django.urls import path
 from django.shortcuts import redirect
 from .models import Vacancy, VacancyNotification, ParsingLog
 from .tasks import parse_hh_vacancies
-
+from django.contrib import admin
+from django.db.models import Count, Q
+from .models import VacancyReaction, FavoriteVacancy
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
@@ -258,3 +260,148 @@ class ParsingLogAdmin(admin.ModelAdmin):
         extra_context = extra_context or {}
         extra_context['show_run_button'] = True
         return super().changelist_view(request, extra_context=extra_context)
+
+
+@admin.register(VacancyReaction)
+class VacancyReactionAdmin(admin.ModelAdmin):
+    list_display = (
+        'user_info',
+        'vacancy_title',
+        'reaction_display',
+        'created_at',
+    )
+
+    list_filter = (
+        'reaction',
+        'created_at',
+    )
+
+    search_fields = (
+        'user__username',
+        'user__telegram_id',
+        'vacancy__title',
+    )
+
+    readonly_fields = (
+        'user',
+        'vacancy',
+        'reaction',
+        'created_at',
+    )
+
+    date_hierarchy = 'created_at'
+
+    def user_info(self, obj):
+        return f"{obj.user.username} ({obj.user.telegram_id})"
+
+    user_info.short_description = "Пользователь"
+
+    def vacancy_title(self, obj):
+        return obj.vacancy.title[:50]
+
+    vacancy_title.short_description = "Вакансия"
+
+    def reaction_display(self, obj):
+        emoji = "👍" if obj.reaction == "like" else "👎"
+        return f"{emoji} {obj.get_reaction_display()}"
+
+    reaction_display.short_description = "Реакция"
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(FavoriteVacancy)
+class FavoriteVacancyAdmin(admin.ModelAdmin):
+    list_display = (
+        'user_info',
+        'vacancy_title',
+        'added_at',
+        'has_notes',
+    )
+
+    list_filter = (
+        'added_at',
+    )
+
+    search_fields = (
+        'user__username',
+        'user__telegram_id',
+        'vacancy__title',
+        'notes',
+    )
+
+    readonly_fields = (
+        'user',
+        'vacancy',
+        'added_at',
+    )
+
+    date_hierarchy = 'added_at'
+
+    def user_info(self, obj):
+        return f"{obj.user.username} ({obj.user.telegram_id})"
+
+    user_info.short_description = "Пользователь"
+
+    def vacancy_title(self, obj):
+        return obj.vacancy.title[:50]
+
+    vacancy_title.short_description = "Вакансия"
+
+    def has_notes(self, obj):
+        return "✅" if obj.notes else "❌"
+
+    has_notes.short_description = "Заметки"
+
+    def has_add_permission(self, request):
+        return False
+
+#
+#
+# class UserAnalyticsAdmin(admin.ModelAdmin):
+#     change_list_template = 'admin/user_analytics.html'
+#
+#     def changelist_view(self, request, extra_context=None):
+#         from django.db.models import Count, Avg
+#         from apps.users.models import User
+#
+#         # Статистика по реакциям
+#         reaction_stats = VacancyReaction.objects.values('reaction').annotate(
+#             count=Count('id')
+#         )
+#
+#         # Топ активные пользователи
+#         active_users = User.objects.annotate(
+#             reaction_count=Count('vacancy_reactions'),
+#             favorites_count=Count('favorite_vacancies'),
+#         ).filter(
+#             reaction_count__gt=0
+#         ).order_by('-reaction_count')[:10]
+#
+#         # Общая статистика
+#         total_likes = VacancyReaction.objects.filter(reaction='like').count()
+#         total_dislikes = VacancyReaction.objects.filter(reaction='dislike').count()
+#         total_favorites = FavoriteVacancy.objects.count()
+#
+#         # Средние показатели
+#         avg_reactions = User.objects.annotate(
+#             reactions=Count('vacancy_reactions')
+#         ).aggregate(avg=Avg('reactions'))
+#
+#         extra_context = extra_context or {}
+#         extra_context.update({
+#             'reaction_stats': reaction_stats,
+#             'active_users': active_users,
+#             'total_likes': total_likes,
+#             'total_dislikes': total_dislikes,
+#             'total_favorites': total_favorites,
+#             'avg_reactions': avg_reactions['avg'] or 0,
+#         })
+#
+#         return super().changelist_view(request, extra_context=extra_context)
+#
+# admin.site.register(UserAnalytics, UserAnalyticsAdmin)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vacancy, VacancyNotification
+from .models import *
 
 
 class VacancySerializer(serializers.ModelSerializer):
@@ -63,3 +63,18 @@ class VacancyNotificationSerializer(serializers.ModelSerializer):
             'sent_at',
             'is_viewed',
         ]
+
+class VacancyReactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VacancyReaction
+        fields = ['id', 'vacancy', 'reaction', 'created_at']
+        read_only_fields = ['created_at']
+
+
+class FavoriteVacancySerializer(serializers.ModelSerializer):
+    vacancy = VacancyListSerializer(read_only=True)
+
+    class Meta:
+        model = FavoriteVacancy
+        fields = ['id', 'vacancy', 'added_at', 'notes']
+        read_only_fields = ['added_at']

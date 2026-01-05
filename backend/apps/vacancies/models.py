@@ -221,3 +221,81 @@ class ParsingLog(models.Model):
 
     def __str__(self):
         return f"Парсинг {self.started_at.strftime('%d.%m.%Y %H:%M')}"
+
+
+class VacancyReaction(models.Model):
+    REACTION_CHOICES = [
+        ('like', 'Интересно'),
+        ('dislike', 'Не подходит'),
+    ]
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='vacancy_reactions',
+        verbose_name="Пользователь"
+    )
+
+    vacancy = models.ForeignKey(
+        Vacancy,
+        on_delete=models.CASCADE,
+        related_name='reactions',
+        verbose_name="Вакансия"
+    )
+
+    reaction = models.CharField(
+        max_length=10,
+        choices=REACTION_CHOICES,
+        verbose_name="Реакция"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата реакции"
+    )
+
+    class Meta:
+        verbose_name = "Реакция на вакансию"
+        verbose_name_plural = "Реакции на вакансии"
+        unique_together = [['user', 'vacancy']]
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.user.telegram_id} - {self.vacancy.title} ({self.reaction})"
+
+
+class FavoriteVacancy(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favorite_vacancies',
+        verbose_name="Пользователь"
+    )
+
+    vacancy = models.ForeignKey(
+        Vacancy,
+        on_delete=models.CASCADE,
+        related_name='favorited_by',
+        verbose_name="Вакансия"
+    )
+
+    added_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Добавлено в избранное"
+    )
+
+    notes = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Заметки пользователя"
+    )
+
+    class Meta:
+        verbose_name = "Избранная вакансия"
+        verbose_name_plural = "Избранные вакансии"
+        unique_together = [['user', 'vacancy']]
+        ordering = ['-added_at']
+
+    def __str__(self):
+        return f"{self.user.telegram_id} - {self.vacancy.title}"
+

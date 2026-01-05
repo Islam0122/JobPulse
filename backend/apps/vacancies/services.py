@@ -1,10 +1,12 @@
 import requests
 import logging
-from typing import List
+from typing import List,Dict
 from django.conf import settings
-from django.core.cache import cache
 from apps.users.models import User
-from .models import Vacancy
+from .models import *
+from django.core.cache import cache
+from django.db.models import Q, Count, Avg
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -378,3 +380,262 @@ def get_user_recommended_vacancies(user: User, limit: int = 10) -> List[Vacancy]
     cache.set(cache_key, result, 600)
 
     return result
+
+
+def match_vacancy_to_users_v2(vacancy: Vacancy, min_score: int = 30) -> List[User]:
+    """
+    Улучшенный подбор с учетом поведения пользователя
+    """
+    cache_key = f"vacancy_matches_v2:{vacancy.hh_id}"
+    cached_result = cache.get(cache_key)
+
+    if cached_result:
+        return cached_result
+
+    users = User.objects.filter(
+        is_active=True,
+        is_profile_completed=True,
+        telegram_id__isnull=False
+    ).prefetch_related(
+        'stack',
+        'work_formats',
+        'employment_types',
+        'vacancy_reactions',  # Новое
+        'favorite_vacancies'  # Новое
+    )
+
+    matched_users = []
+
+    for user in users:
+        # Базовый скор
+        base_score = calculate_match_score(user, vacancy)
+
+        # Бонус за поведенческие факторы
+        behavior_bonus = calculate_behavior_bonus(user, vacancy)
+
+        final_score = base_score + behavior_bonus
+
+        if final_score >= min_score:
+            matched_users.append((user, final_score))
+
+    # Сортировка по релевантности
+    matched_users.sort(key=lambda x: x[1], reverse=True)
+    result = [user for user, _ in matched_users]
+
+    cache.set(cache_key, result, 300)
+    return result
+
+
+def calculate_behavior_bonus(user: User, vacancy: Vacancy) -> int:
+    """
+    Рассчитать бонус на основе поведения пользователя
+
+    Факторы:
+    1. Реакции на похожие вакансии (+15 баллов)
+    2. Избранные похожие вакансии (+20 баллов)
+    3. Частота просмотра определенных компаний (+10 баллов)
+    4. Предпочтения по зарплате (+10 баллов)
+    """
+    bonus = 0
+
+    # 1. Анализ реакций на похожие вакансии
+    similar_liked = VacancyReaction.objects.filter(
+        user=user,
+        reaction='like',
+        vacancy__title__icontains=user.role
+    ).count()
+
+    if similar_liked > 0:
+        bonus += min(similar_liked * 3, 15)  # Максимум 15 баллов
+
+    # Штраф за dislike похожих вакансий
+    similar_disliked = VacancyReaction.objects.filter(
+        user=user,
+        reaction='dislike',
+        vacancy__title__icontains=vacancy.title.split()[0]  # Первое слово
+    ).count()
+
+    if similar_disliked > 2:
+        bonus -= 20  # Существенный штраф
+
+    # 2. Избранные вакансии
+    has_similar_favorites = FavoriteVacancy.objects.filter(
+        user=user,
+        vacancy__title__icontains=user.role
+    ).exists()
+
+    if has_similar_favorites:
+        bonus += 20
+
+    # 3. Предпочтения по компаниям
+    if user.vacancy_reactions.filter(
+            reaction='like',
+            vacancy__company_name=vacancy.company_name
+    ).exists():
+        bonus += 10
+
+    # 4. Анализ зарплатных предпочтений на основе лайков
+    if user.salary_from and vacancy.salary_from:
+        liked_vacancies = VacancyReaction.objects.filter(
+            user=user,
+            reaction='like',
+            vacancy__salary_from__isnull=False
+        ).values_list('vacancy__salary_from', flat=True)
+
+        if liked_vacancies:
+            avg_liked_salary = sum(liked_vacancies) / len(liked_vacancies)
+
+            # Если текущая вакансия близка к среднему лайкнутому
+            if abs(vacancy.salary_from - avg_liked_salary) / avg_liked_salary < 0.2:
+                bonus += 10
+
+    return bonus
+
+
+def get_personalized_vacancies(user: User, limit: int = 20) -> List[Vacancy]:
+    """
+    Персонализированная лента вакансий с учетом истории
+    """
+    cache_key = f"personalized_feed:{user.telegram_id}"
+    cached = cache.get(cache_key)
+
+    if cached:
+        return cached
+
+    # Исключаем вакансии, которые пользователь дизлайкнул
+    disliked_ids = VacancyReaction.objects.filter(
+        user=user,
+        reaction='dislike'
+    ).values_list('vacancy_id', flat=True)
+
+    # Исключаем уже уведомленные
+    notified_ids = user.notified_vacancies.values_list('id', flat=True)
+
+    # Базовый запрос
+    vacancies = Vacancy.objects.filter(
+        is_active=True
+    ).exclude(
+        id__in=list(disliked_ids) + list(notified_ids)
+    )
+
+    # Фильтр по роли (мягкий)
+    if user.role:
+        role_words = user.role.lower().split()
+        q_objects = Q()
+        for word in role_words:
+            if len(word) > 3:  # Игнорируем короткие слова
+                q_objects |= Q(title__icontains=word)
+
+        vacancies = vacancies.filter(q_objects)
+
+    # Получаем больше вакансий для скоринга
+    vacancies = vacancies.order_by('-published_at')[:limit * 3]
+
+    # Рассчитываем персонализированный скор
+    scored_vacancies = []
+    for vacancy in vacancies:
+        base_score = calculate_match_score(user, vacancy)
+        behavior_bonus = calculate_behavior_bonus(user, vacancy)
+
+        # Бонус за свежесть
+        hours_old = (timezone.now() - vacancy.published_at).total_seconds() / 3600
+        freshness_bonus = max(0, 10 - int(hours_old / 24))
+
+        total_score = base_score + behavior_bonus + freshness_bonus
+
+        if total_score >= 40:
+            scored_vacancies.append((vacancy, total_score))
+
+    # Сортировка по итоговому скору
+    scored_vacancies.sort(key=lambda x: x[1], reverse=True)
+    result = [v for v, _ in scored_vacancies[:limit]]
+
+    cache.set(cache_key, result, 600)  # 10 минут
+    return result
+
+
+def analyze_user_preferences(user: User) -> Dict:
+    """
+    Анализ предпочтений пользователя на основе поведения
+
+    Возвращает инсайты для улучшения профиля
+    """
+    liked_vacancies = VacancyReaction.objects.filter(
+        user=user,
+        reaction='like'
+    ).select_related('vacancy')
+
+    if not liked_vacancies.exists():
+        return {
+            "message": "Пока недостаточно данных для анализа",
+            "recommendations": []
+        }
+
+    # Анализируем лайкнутые вакансии
+    liked_list = list(liked_vacancies.values(
+        'vacancy__title',
+        'vacancy__company_name',
+        'vacancy__location',
+        'vacancy__salary_from',
+        'vacancy__skills'
+    ))
+
+    all_skills = []
+    for item in liked_list:
+        all_skills.extend(item['vacancy__skills'] or [])
+
+    from collections import Counter
+    skill_freq = Counter(all_skills)
+    top_skills = [skill for skill, _ in skill_freq.most_common(10)]
+
+    # 2. Средняя зарплата
+    salaries = [
+        item['vacancy__salary_from']
+        for item in liked_list
+        if item['vacancy__salary_from']
+    ]
+    avg_salary = sum(salaries) / len(salaries) if salaries else None
+
+    locations = [
+        item['vacancy__location']
+        for item in liked_list
+        if item['vacancy__location']
+    ]
+    location_freq = Counter(locations)
+    top_locations = [loc for loc, _ in location_freq.most_common(3)]
+    recommendations = []
+    user_stack_names = set(s.name.lower() for s in user.stack.all())
+    missing_skills = [s for s in top_skills if s.lower() not in user_stack_names]
+
+    if missing_skills[:3]:
+        recommendations.append({
+            "type": "skills",
+            "message": f"Добавь в профиль: {', '.join(missing_skills[:3])}",
+            "action": "update_stack"
+        })
+
+    if avg_salary and user.salary_from:
+        if user.salary_from < avg_salary * 0.8:
+            recommendations.append({
+                "type": "salary",
+                "message": f"Вакансии, которые тебе нравятся, обычно предлагают ~{int(avg_salary)}. "
+                           f"Возможно, стоит повысить зарплатные ожидания.",
+                "suggested_salary": int(avg_salary)
+            })
+
+    if top_locations and user.location:
+        if user.location not in top_locations:
+            recommendations.append({
+                "type": "location",
+                "message": f"Тебе часто нравятся вакансии из: {', '.join(top_locations)}. "
+                           f"Рассмотри изменение локации.",
+                "suggested_locations": top_locations
+            })
+
+    return {
+        "liked_count": liked_vacancies.count(),
+        "top_skills": top_skills[:10],
+        "avg_salary": int(avg_salary) if avg_salary else None,
+        "top_locations": top_locations,
+        "recommendations": recommendations
+    }
