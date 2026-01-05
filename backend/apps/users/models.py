@@ -26,8 +26,8 @@ class WorkFormat(models.Model):
     )
 
     class Meta:
-        verbose_name = "Work format / Формат работы"
-        verbose_name_plural = "Work formats / Форматы работы"
+        verbose_name = "Формат работы"
+        verbose_name_plural = "Форматы работы"
 
     def __str__(self):
         return self.title
@@ -42,8 +42,8 @@ class Stack(models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name = "Stack / Стек"
-        verbose_name_plural = "Stacks / Стеки"
+        verbose_name = "Стек"
+        verbose_name_plural = "Стеки"
 
     def __str__(self):
         return self.name
@@ -61,8 +61,8 @@ class EmploymentType(models.Model):
     )
 
     class Meta:
-        verbose_name = "Employment type / Тип занятости"
-        verbose_name_plural = "Employment types / Типы занятости"
+        verbose_name = "Тип занятости"
+        verbose_name_plural = "Типы занятости"
 
     def __str__(self):
         return self.title
@@ -172,8 +172,8 @@ class User(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
-        verbose_name = "User / Пользователь"
-        verbose_name_plural = "Users / Пользователи"
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
     def __str__(self):
         return f"{self.telegram_id} | {self.role}"

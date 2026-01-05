@@ -97,3 +97,6 @@ class UserAdmin(admin.ModelAdmin):
     )
 
     ordering = ['-created_at']
+
+from django.contrib.auth.models import Group
+admin.site.unregister(Group)

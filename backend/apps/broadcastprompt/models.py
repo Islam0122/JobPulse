@@ -25,8 +25,8 @@ class BroadcastMessage(models.Model):
 
     class Meta:
         db_table = "broadcast_message"
-        verbose_name = "Рассылка"
-        verbose_name_plural = "Рассылки"
+        verbose_name = "Сообщение рассылки"
+        verbose_name_plural = "Сообщение рассылки"
         ordering = ["-created_at"]
 
     def __str__(self):
