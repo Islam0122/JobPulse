@@ -1,12 +1,14 @@
-from aiogram import Router, F, Bot
-from aiogram.types import Message,FSInputFile,CallbackQuery
+from aiogram import Router, F
+from aiogram.types import Message, CallbackQuery
 from services.api_client import api
 from keyboards.onboarding_kb import *
 
 router = Router()
 logo = "AgACAgIAAxkBAAICS2lb4BQM-xj2JkiR0jz7BfJDHv6RAAKAEWsbTSzYSl2zO5BmDzyyAQADAgADeQADOAQ"
 
+
 def build_profile_text(user: dict) -> str:
+    """Форматирование текста профиля"""
     stack_text = ", ".join(s["name"] for s in user.get("stack", [])) or "Не указано"
     work_format_text = ", ".join(w["title"] for w in user.get("work_formats", [])) or "Не указано"
     employment_text = ", ".join(e["title"] for e in user.get("employment_types", [])) or "Не указано"
@@ -17,8 +19,7 @@ def build_profile_text(user: dict) -> str:
         else "Не указано"
     )
 
-    return f"""
-👤 <b>Твой профиль</b>
+    return f"""👤 <b>Твой профиль</b>
 
 📝 <b>Роль:</b> {user.get('role', 'Не указано')}
 🎯 <b>Уровень:</b> {user.get('level_label', 'Не указано')}
@@ -39,8 +40,10 @@ MENU_TEXT = (
     "Выбери действие 👇"
 )
 
+
 @router.callback_query(F.data == "menu:home")
 async def show_menu(callback: CallbackQuery):
+    """Главное меню"""
     await callback.message.edit_caption(
         caption=MENU_TEXT,
         parse_mode="HTML",
@@ -51,52 +54,75 @@ async def show_menu(callback: CallbackQuery):
 
 @router.callback_query(F.data == "menu:profile")
 async def show_profile_callback(callback: CallbackQuery):
+    """Показать профиль"""
     user = await api.get_user(callback.from_user.id)
 
     if not user:
         await callback.answer("Профиль не найден", show_alert=True)
         return
+
+    # Добавляем кнопку "Редактировать"
+    builder = InlineKeyboardBuilder()
+    builder.button(text="✏️ Редактировать профиль", callback_data="edit:full")
+    builder.button(text="⬅️ Назад", callback_data="menu:home")
+    builder.adjust(1)
+
     try:
         await callback.message.edit_caption(
-        caption=build_profile_text(user),
-        parse_mode="HTML",
-        reply_markup=get_return_keyboard()
+            caption=build_profile_text(user),
+            parse_mode="HTML",
+            reply_markup=builder.as_markup()
         )
-    except Exception as e:
+    except Exception:
         await callback.message.delete()
         await callback.message.answer_photo(
             photo=logo,
             caption=build_profile_text(user),
             parse_mode="HTML",
-            reply_markup=get_main_menu_keyboard()
+            reply_markup=builder.as_markup()
         )
     await callback.answer()
 
 
-HELP_TEXT = """
-❓ <b>Помощь</b>
+HELP_TEXT = """❓ <b>Помощь</b>
 
 <b>Что умеет бот:</b>
 • Помогает найти подходящие вакансии
 • Учитывает твой профиль и предпочтения
 • Присылает уведомления автоматически
+• Анализирует твои предпочтения
 
 <b>Разделы меню:</b>
+💼 Вакансии — просмотр вакансий  
 📊 Мой профиль — твои данные  
-🔔 Уведомления — частота оповещений  
-✏️ Редактировать — изменить профиль  
+📈 Аналитика — статистика и рекомендации
+🔔 Настройки — частота уведомлений  
 ❓ Помощь — этот экран  
+
+<b>Как работать с вакансиями:</b>
+1️⃣ Открой раздел "Вакансии"
+2️⃣ Смотри рекомендации
+3️⃣ Ставь 👍 или 👎
+4️⃣ Добавляй в ⭐️ избранное
 
 <b>Как это работает:</b>
 1️⃣ Ты заполняешь профиль  
-2️⃣ Бот подбирает вакансии  
-3️⃣ Ты получаешь уведомления  
+2️⃣ Бот парсит вакансии с HH.ru
+3️⃣ Алгоритм подбирает подходящие
+4️⃣ Ты получаешь уведомления  
+
+<b>Частота уведомлений:</b>
+• Сразу 🔔 — как только найдена подходящая вакансия
+• Ежедневно 📅 — дайджест раз в день
+• Еженедельно 📆 — сводка раз в неделю
 
 <b>Поддержка:</b> @islam_duishobaev
 """
 
+
 @router.callback_query(F.data == "menu:help")
 async def show_help(callback: CallbackQuery):
+    """Помощь"""
     await callback.message.edit_caption(
         caption=HELP_TEXT,
         parse_mode="HTML",
@@ -107,9 +133,8 @@ async def show_help(callback: CallbackQuery):
 
 @router.callback_query(F.data == "sponsors:info")
 async def sponsors_info_callback(callback: CallbackQuery):
+    """Информация о спонсорах"""
     channels = await api.get_required_channels()
-
-
 
     text = (
         "💡 <b>Почему нужна подписка?</b>\n\n"
@@ -147,6 +172,7 @@ async def sponsors_info_callback(callback: CallbackQuery):
 
 @router.callback_query(F.data == "menu:settings")
 async def notification_settings_callback(callback: CallbackQuery):
+    """Настройки уведомлений"""
     telegram_id = callback.from_user.id
     user = await api.get_user(telegram_id)
 
@@ -162,8 +188,9 @@ async def notification_settings_callback(callback: CallbackQuery):
             parse_mode="HTML",
             reply_markup=get_notification_mode_keyboard2()
         )
-    except Exception as e:
-        await callback.message.answer(
+    except Exception:
+        await callback.message.answer_photo(
+            photo=logo,
             caption=f"🔔 <b>Настройки уведомлений</b>\n\n"
                     f"<b>Текущий режим:</b> {user.get('notify_mode_label')}\n\n"
                     f"Выбери новый режим:",
@@ -176,7 +203,8 @@ async def notification_settings_callback(callback: CallbackQuery):
 
 @router.callback_query(F.data.startswith("notify:"))
 async def update_notifications_callback(callback: CallbackQuery):
-    notify_mode = callback.data.split(":")[1]  # instant, daily, weekly
+    """Обновить режим уведомлений"""
+    notify_mode = callback.data.split(":")[1]
     telegram_id = callback.from_user.id
 
     mode_labels = {
@@ -197,7 +225,7 @@ async def update_notifications_callback(callback: CallbackQuery):
                 parse_mode="HTML",
                 reply_markup=get_return_keyboard()
             )
-        except Exception as e:
+        except Exception:
             await callback.message.answer(
                 f"✅ <b>Настройки сохранены!</b>\n\n"
                 f"Режим уведомлений: {mode_label}",
@@ -208,4 +236,3 @@ async def update_notifications_callback(callback: CallbackQuery):
         await callback.answer(f"✅ Режим изменен на: {mode_label}")
     else:
         await callback.answer("❌ Ошибка обновления настроек", show_alert=True)
-

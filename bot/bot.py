@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import RedisStorage
 import config
-from handlers import start, profile, echo, subscription, insights, vacancies
+from handlers import start, profile, echo, subscription, insights, vacancies, profile_edit
 from middlewares.subscription_middleware import SubscriptionMiddleware
 
 logging.basicConfig(
@@ -23,6 +23,7 @@ async def main():
     dp.include_router(subscription.router)  # Проверка подписки
     dp.include_router(start.router)  # Команды /start, онбординг
     dp.include_router(profile.router)  # Профиль, настройки
+    dp.include_router(profile_edit.router)
     dp.include_router(vacancies.router)  # Просмотр вакансий
     dp.include_router(insights.router)  # Аналитика
     dp.include_router(echo.router)  # Эхо (должен быть последним)
