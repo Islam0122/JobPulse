@@ -204,6 +204,16 @@ class APIClient:
             data=data
         )
 
+    async def get_user_insights(self, telegram_id: int) -> Optional[Dict]:
+        """Получить инсайты и аналитику пользователя"""
+        params = {"telegram_id": telegram_id}
+        return await self._make_request("GET", "users/insights/", params=params)
+
+    async def get_user_stats(self, telegram_id: int) -> Optional[Dict]:
+        """Получить статистику активности пользователя"""
+        params = {"telegram_id": telegram_id}
+        return await self._make_request("GET", "users/stats/", params=params)
+
 
 # Singleton instance
 api = APIClient()

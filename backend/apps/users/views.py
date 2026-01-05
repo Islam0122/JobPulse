@@ -131,4 +131,53 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserReadSerializer(user)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'])
+    def insights(self, request):
+        from apps.vacancies.services import analyze_user_preferences
+
+        telegram_id = request.query_params.get('telegram_id')
+
+        if not telegram_id:
+            return Response({"error": "telegram_id required"}, 400)
+
+        try:
+            user = User.objects.get(telegram_id=telegram_id)
+            insights = analyze_user_preferences(user)
+            return Response(insights)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, 404)
+
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        from apps.vacancies.models import VacancyReaction, FavoriteVacancy, VacancyNotification
+
+        telegram_id = request.query_params.get('telegram_id')
+
+        if not telegram_id:
+            return Response({"error": "telegram_id required"}, 400)
+
+        try:
+            user = User.objects.get(telegram_id=telegram_id)
+
+            stats = {
+                'likes_count': VacancyReaction.objects.filter(
+                    user=user, reaction='like'
+                ).count(),
+                'dislikes_count': VacancyReaction.objects.filter(
+                    user=user, reaction='dislike'
+                ).count(),
+                'favorites_count': FavoriteVacancy.objects.filter(
+                    user=user
+                ).count(),
+                'notifications_count': VacancyNotification.objects.filter(
+                    user=user
+                ).count(),
+                'viewed_count': VacancyNotification.objects.filter(
+                    user=user, is_viewed=True
+                ).count(),
+            }
+
+            return Response(stats)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, 404
 
