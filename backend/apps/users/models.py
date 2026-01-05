@@ -26,6 +26,7 @@ class WorkFormat(models.Model):
     )
 
     class Meta:
+        ordering = ["title"]
         verbose_name = "Формат работы"
         verbose_name_plural = "Форматы работы"
 
@@ -61,6 +62,7 @@ class EmploymentType(models.Model):
     )
 
     class Meta:
+        ordering = ["title"]
         verbose_name = "Тип занятости"
         verbose_name_plural = "Типы занятости"
 
