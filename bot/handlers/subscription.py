@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 router = Router()
 
-logo = "AgACAgIAAxkBAANdaVaQDKbUzpyPbrB9DbKWbkck63YAAscNaxvqqrlKq_AlEQiE2TUBAAMCAAN5AAM4BA"
+logo = "AgACAgIAAxkBAAICS2lb4BQM-xj2JkiR0jz7BfJDHv6RAAKAEWsbTSzYSl2zO5BmDzyyAQADAgADeQADOAQ"
 
 
 @router.callback_query(F.data == "check_subscription")
