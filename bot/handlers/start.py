@@ -9,7 +9,7 @@ import logging
 import html
 from keyboards.onboarding_kb import *
 
-logo = "AgACAgIAAxkBAANdaVaQDKbUzpyPbrB9DbKWbkck63YAAscNaxvqqrlKq_AlEQiE2TUBAAMCAAN5AAM4BA"
+logo = "AgACAgIAAxkBAAICS2lb4BQM-xj2JkiR0jz7BfJDHv6RAAKAEWsbTSzYSl2zO5BmDzyyAQADAgADeQADOAQ"
 logger = logging.getLogger(__name__)
 router = Router()
 last_message_id = 0
