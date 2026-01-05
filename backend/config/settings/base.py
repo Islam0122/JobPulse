@@ -13,7 +13,6 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-super-secret-key-change-
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
     'https://*.up.railway.app',

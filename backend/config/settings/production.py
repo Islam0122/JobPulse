@@ -1,7 +1,7 @@
 from .base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [env.str("ALLOWED_HOST", default="localhost")]
 
 DATABASES = {
     "default": {
