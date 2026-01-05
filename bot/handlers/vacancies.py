@@ -243,11 +243,11 @@ async def vacancy_full_description(callback: CallbackQuery):
 
     builder = InlineKeyboardBuilder()
     builder.button(text="🔗 Открыть на HH.ru", url=vacancy['url'])
-    builder.button(text="🔙 Назад", callback_data=f"vacancy:back:{parts[3]}:{parts[4]}")
+    builder.button(text="🔙 Назад", callback_data=f"menu:home")
     builder.adjust(1)
 
-    await callback.message.answer(
-        text=full_text[:4096],  # Telegram limit
+    await callback.message.edit_caption(
+        caption=full_text[:1096]+ ".................",  # Telegram limit
         parse_mode="HTML",
         reply_markup=builder.as_markup()
     )
