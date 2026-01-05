@@ -210,12 +210,6 @@ async def show_profile_recommendations(callback: CallbackQuery):
 
     builder = InlineKeyboardBuilder()
 
-    if recommendations:
-        builder.button(
-            text="✏️ Редактировать профиль",
-            callback_data="edit:profile_start"
-        )
-
     builder.button(text="🔄 Обновить анализ", callback_data="insights:preferences")
     builder.button(text="⬅️ Назад", callback_data="menu:insights")
     builder.adjust(1)
