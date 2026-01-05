@@ -4,7 +4,7 @@ from services.api_client import api
 from keyboards.onboarding_kb import *
 
 router = Router()
-logo = "AgACAgIAAxkBAANdaVaQDKbUzpyPbrB9DbKWbkck63YAAscNaxvqqrlKq_AlEQiE2TUBAAMCAAN5AAM4BA"
+logo = "AgACAgIAAxkBAAICS2lb4BQM-xj2JkiR0jz7BfJDHv6RAAKAEWsbTSzYSl2zO5BmDzyyAQADAgADeQADOAQ"
 
 def build_profile_text(user: dict) -> str:
     stack_text = ", ".join(s["name"] for s in user.get("stack", [])) or "Не указано"
