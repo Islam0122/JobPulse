@@ -133,7 +133,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def insights(self, request):
-        from apps.vacancies.services import analyze_user_preferences
+        from ..vacancies.services import analyze_user_preferences
 
         telegram_id = request.query_params.get('telegram_id')
 
@@ -149,7 +149,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def stats(self, request):
-        from apps.vacancies.models import VacancyReaction, FavoriteVacancy, VacancyNotification
+        from ..vacancies.models import VacancyReaction, FavoriteVacancy, VacancyNotification
 
         telegram_id = request.query_params.get('telegram_id')
 
@@ -179,5 +179,5 @@ class UserViewSet(viewsets.ModelViewSet):
 
             return Response(stats)
         except User.DoesNotExist:
-            return Response({"error": "User not found"}, 404
+            return Response({"error": "User not found"}, 404)
 
