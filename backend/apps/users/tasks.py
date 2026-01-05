@@ -11,7 +11,6 @@ def send_notification(user_id: int, message: str):
     try:
         user = User.objects.get(telegram_id=user_id)
         logger.info(f'Sending notification to {user.username}: {message}')
-        # Здесь логика отправки через Telegram API
         return f'Notification sent to {user_id}'
     except User.DoesNotExist:
         logger.error(f'User {user_id} not found')

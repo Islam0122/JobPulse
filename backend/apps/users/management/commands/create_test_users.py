@@ -9,7 +9,6 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('🚀 Создание справочников и тестовых данных...'))
         self.stdout.write('')
 
-        # Создание стеков
         self.stdout.write(self.style.WARNING('📚 Создание технологий...'))
         stacks = [
             'Python', 'JavaScript', 'TypeScript', 'React', 'Django',
@@ -24,7 +23,6 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f'  ✓ Создан стек: {stack_name}')
 
-        # Создание форматов работы
         self.stdout.write('')
         self.stdout.write(self.style.WARNING('💼 Создание форматов работы...'))
         work_formats_data = [
@@ -43,7 +41,6 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f'  ✓ Создан формат: {title}')
 
-        # Создание типов занятости
         self.stdout.write('')
         self.stdout.write(self.style.WARNING('📋 Создание типов занятости...'))
         employment_types_data = [
@@ -148,15 +145,12 @@ class Command(BaseCommand):
             )
 
             if created:
-                # Добавление стеков
                 stack_objs = Stack.objects.filter(name__in=stacks)
                 user.stack.add(*stack_objs)
 
-                # Добавление форматов работы
                 wf_objs = WorkFormat.objects.filter(code__in=work_formats)
                 user.work_formats.add(*wf_objs)
 
-                # Добавление типов занятости
                 et_objs = EmploymentType.objects.filter(code__in=employment_types)
                 user.employment_types.add(*et_objs)
 
