@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'apps.channels',
     'apps.vacancies',
     'apps.broadcastprompt',
+    'apps.review',
 
 ]
 
