@@ -26,8 +26,8 @@ async def main():
     dp.include_router(profile_edit.router)
     dp.include_router(vacancies.router)  # Просмотр вакансий
     dp.include_router(insights.router)  # Аналитика
-    dp.include_router(echo.router)  # Эхо (должен быть последним)
     dp.include_router(comment.router)
+    dp.include_router(echo.router)  # Эхо (должен быть последним)
 
     logger.info("🤖 Бот запущен и готов к работе!")
     logger.info(f"📡 Backend API: {config.BACKEND_URL}")
