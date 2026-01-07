@@ -293,5 +293,28 @@ class APIClient:
             params=params
         )
 
+    async def send_comment(
+            self,
+            telegram_id: int,
+            text: str
+    ) -> Optional[Dict]:
+        """
+        Отправить комментарий / фидбек боту
+
+        Args:
+            telegram_id: Telegram ID пользователя
+            text: Текст комментария
+        """
+        data = {
+            "telegram_id": telegram_id,
+            "text": text
+        }
+
+        return await self._make_request(
+            "POST",
+            "comments/",
+            data=data
+        )
+
 
 api = APIClient()
