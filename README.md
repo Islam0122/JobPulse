@@ -20,9 +20,10 @@ A powerful Telegram bot that helps professionals find job opportunities through 
 - [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
 
+
 ---
 
-## ✨ Features
+## Features
 
 ### For Users
 - 🔐 **Smart Matching** - AI-powered vacancy matching based on profile
@@ -43,7 +44,7 @@ A powerful Telegram bot that helps professionals find job opportunities through 
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.11+
@@ -92,7 +93,7 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 jobpulse/
@@ -132,7 +133,7 @@ jobpulse/
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 | Component | Technology | Purpose |
@@ -162,7 +163,7 @@ jobpulse/
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### 1. Backend Setup
 
@@ -229,7 +230,7 @@ python bot/bot.py
 
 ---
 
-## ⚙️ Configuration
+##️ Configuration
 
 ### Backend (.env)
 
@@ -276,7 +277,7 @@ REDIS_URL=redis://localhost:6379/1
 
 ---
 
-## 📚 API Documentation
+## API Documentation
 
 ### Auto-Generated Docs
 - **Swagger UI**: `http://localhost:8000/api/swagger/`
@@ -317,7 +318,7 @@ GET    /api/required-channels/        # Required subscriptions
 
 ---
 
-## 🤖 Bot Commands
+## Bot Commands
 
 ### User Commands
 ```
@@ -337,7 +338,7 @@ GET    /api/required-channels/        # Required subscriptions
 
 ---
 
-## 👨‍💻 Development
+## Development
 
 ### Make Commands
 
@@ -408,7 +409,7 @@ mypy .
 
 ---
 
-## 🚀 Deployment
+## Deployment
 
 ### Option 1: Railway.app (Recommended)
 
@@ -461,7 +462,7 @@ sudo systemctl restart nginx
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Redis Connection Failed
 ```bash
@@ -514,7 +515,7 @@ If you see "429 Too Many Requests":
 
 ---
 
-## 📞 Support & Contribution
+## Support & Contribution
 
 ### Getting Help
 - 📖 [Full Documentation](./docs/)
@@ -530,13 +531,13 @@ If you see "429 Too Many Requests":
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **HH.ru API** - Job vacancies data
 - **aiogram** - Telegram Bot framework
@@ -546,7 +547,7 @@ This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
-## 📊 Project Statistics
+## Project Statistics
 
 ```
 Backend:
