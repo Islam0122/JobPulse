@@ -1,11 +1,11 @@
-from django.contrib import admin
 from .models import User, Stack, WorkFormat, EmploymentType
-from django.urls import path
-from django.shortcuts import render
-from django.db.models import Count
-from django.utils import timezone
+from collections import Counter
 from datetime import timedelta
-
+from django.utils import timezone
+from django.shortcuts import render
+from django.contrib import admin
+from django.urls import path
+from django.db.models import Count
 
 @admin.register(Stack)
 class StackAdmin(admin.ModelAdmin):
@@ -174,6 +174,24 @@ def analytics_view(request):
     }
 
     return render(request, "admin/analytics.html", context)
+
+
+def get_admin_urls(original_urls):
+    def get_urls():
+        urls = original_urls()
+        custom = [
+            path(
+                "analytics/",
+                admin.site.admin_view(analytics_view),
+                name="analytics",
+            )
+        ]
+        return custom + urls
+
+    return get_urls
+
+
+admin.site.get_urls = get_admin_urls(admin.site.get_urls)
 
 from django.contrib.auth.models import Group
 admin.site.unregister(Group)
