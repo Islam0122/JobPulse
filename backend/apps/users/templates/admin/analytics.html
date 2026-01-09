@@ -1,0 +1,112 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'admin/css/analytics.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <style>
+.small-box {
+  border-radius: 14px;
+}
+
+.card {
+  border-radius: 14px;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 6px 10px;
+}
+
+h1 {
+  font-weight: 600;
+}
+    </style>
+  <div class="row mb-3">
+    <div class="col">
+      <h1 class="h3">📊 Аналитика</h1>
+      <p class="text-muted">Статистика пользователей</p>
+    </div>
+
+    <div class="col-auto">
+      <form method="get">
+        <select name="days" class="form-control" onchange="this.form.submit()">
+          <option value="7" {% if days == 7 %}selected{% endif %}>7 дней</option>
+          <option value="30" {% if days == 30 %}selected{% endif %}>30 дней</option>
+          <option value="90" {% if days == 90 %}selected{% endif %}>90 дней</option>
+        </select>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>{{ total_users }}</h3>
+          <p>Всего пользователей</p>
+        </div>
+        <div class="icon"><i class="fas fa-users"></i></div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{ users_period }}</h3>
+          <p>За {{ days }} дней</p>
+        </div>
+        <div class="icon"><i class="fas fa-user-plus"></i></div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-6">
+      <div class="small-box {% if growth >= 0 %}bg-warning{% else %}bg-danger{% endif %}">
+        <div class="inner">
+          <h3>{{ growth }}</h3>
+          <p>Рост</p>
+        </div>
+        <div class="icon"><i class="fas fa-chart-line"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">По уровням</h3>
+        </div>
+        <div class="card-body">
+          {% for row in by_level %}
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ row.level|default:"—" }}</span>
+            <span class="badge badge-primary">{{ row.total }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🔥 Топ ролей</h3>
+        </div>
+        <div class="card-body">
+          {% for row in by_role %}
+          <div class="d-flex justify-content-between mb-2">
+            <span>{{ row.role }}</span>
+            <span class="badge badge-info">{{ row.total }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

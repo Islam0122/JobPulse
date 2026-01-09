@@ -132,15 +132,15 @@ from .cors import *
 from .redis import *
 
 JAZZMIN_SETTINGS = {
-    'site_header': "JobPluse",
-    'site_brand': "JobPluse",
-    'copyright': "All Rights Reserved 2026",
-    "welcome_sign": "Welcome to JobPluse Admin Panel!",
+    "site_header": "JobPulse",
+    "site_brand": "JobPulse",
+    "welcome_sign": "Welcome to JobPulse Admin Panel 🚀",
+    "copyright": "All Rights Reserved © 2026",
 
     "topmenu_links": [
         {"name": "Home", "url": "admin:index"},
-        {"name": "Users", "url": "/admin/users/user/"},
-        {"name": "Vacancies", "url": "/admin/vacancies/vacancy/"},
+        {"name": "Users", "model": "users.User"},
+        {"name": "Vacancies", "model": "vacancies.Vacancy"},
     ],
 
     "order_with_respect_to": [
@@ -163,8 +163,20 @@ JAZZMIN_SETTINGS = {
         "broadcastprompt.RequiredChannel": "fas fa-tv",
     },
 
-    "show_ui_builder": True
+    "custom_links": {
+        "users": [
+            {
+                "name": "Аналитика",
+                "url": "/admin/analytics/",
+                "icon": "fas fa-chart-line",
+                "permissions": ["users.view_user"],
+            }
+        ]
+    },
+
+    "show_ui_builder": True,
 }
+
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
