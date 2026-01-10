@@ -177,6 +177,9 @@ async def show_vacancy_card(
         return
 
     vacancy = vacancies[index]
+    telegram_id = callback.from_user.id
+
+    await api.mark_vacancy_viewed(telegram_id, vacancy['id'])
     text = format_vacancy_full(vacancy, index + 1, len(vacancies))
     keyboard = build_vacancy_keyboard(
         vacancy_id=vacancy['id'],
@@ -380,6 +383,8 @@ async def vacancy_full_description(callback: CallbackQuery):
     current_index = int(parts[4])
 
     vacancy = await api.get_vacancy_detail(vacancy_id)
+    telegram_id = callback.from_user.id
+    await api.mark_vacancy_viewed(telegram_id, vacancy_id)
 
     if not vacancy:
         await callback.answer("Вакансия не найдена", show_alert=True)
@@ -445,6 +450,8 @@ async def vacancy_navigation(callback: CallbackQuery):
 
     telegram_id = callback.from_user.id
     vacancies = await get_vacancies_by_source(source, telegram_id)
+    vacancy = vacancies[index]
+    await api.mark_vacancy_viewed(telegram_id, vacancy['id'])
 
     if vacancies:
         await show_vacancy_card(callback, vacancies, index, source)

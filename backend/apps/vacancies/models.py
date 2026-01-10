@@ -159,6 +159,8 @@ class VacancyNotification(models.Model):
         default=False,
         verbose_name="Просмотрено"
     )
+    viewed_at = models.DateTimeField(null=True, blank=True)
+
 
     class Meta:
         verbose_name = "Уведомление о вакансии"

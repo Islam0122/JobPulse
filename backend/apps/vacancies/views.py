@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django.utils import timezone
 
 from .models import *
 from .serializers import *
@@ -72,12 +73,7 @@ class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=['post'])
     def mark_viewed(self, request, pk=None):
-        """
-        Отметить вакансию как просмотренную
-
-        Body:
-        - telegram_id: ID пользователя
-        """
+        """Отметить вакансию как просмотренную"""
         vacancy = self.get_object()
         telegram_id = request.data.get('telegram_id')
 
@@ -89,22 +85,21 @@ class VacancyViewSet(viewsets.ReadOnlyModelViewSet):
 
         try:
             user = User.objects.get(telegram_id=telegram_id)
-            notification = VacancyNotification.objects.get(
+
+            notification, created = VacancyNotification.objects.get_or_create(
                 user=user,
-                vacancy=vacancy
+                vacancy=vacancy,
+                defaults={'is_viewed': False}
             )
+
             notification.is_viewed = True
+            notification.viewed_at = timezone.now()
             notification.save()
 
             return Response({"status": "marked as viewed"})
         except User.DoesNotExist:
             return Response(
                 {"error": "User not found"},
-                status=status.HTTP_404_NOT_FOUND
-            )
-        except VacancyNotification.DoesNotExist:
-            return Response(
-                {"error": "Notification not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
 

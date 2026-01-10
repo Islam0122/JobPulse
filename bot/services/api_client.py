@@ -284,6 +284,8 @@ class APIClient:
             params=params
         )
 
+
+
     async def get_user_stats(self, telegram_id: int) -> Optional[Dict]:
         """Получить статистику активности пользователя"""
         params = {"telegram_id": telegram_id}
