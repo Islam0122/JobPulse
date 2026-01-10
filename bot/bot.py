@@ -32,7 +32,6 @@ async def setup_bot_commands(bot: Bot):
     """
     await bot.set_my_commands([
         BotCommand(command="start", description="🏠 Главное меню"),
-        
         BotCommand(command="comment", description="💬 Оставить комментарий"),
     ])
 
