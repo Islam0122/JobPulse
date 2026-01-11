@@ -90,8 +90,12 @@ class SubscriptionMiddleware(BaseMiddleware):
             channels: Список каналов, на которые нужно подписаться
         """
 
-        text = "🔒 <b>Доступ ограничен</b>\n\n"
-        text += "Для использования бота необходимо подписаться на:\n\n"
+        text = (
+            "🤝 <b>JobPulse работает бесплатно благодаря партнёрам</b>\n\n"
+            "Чтобы продолжить пользоваться ботом и получать персональные вакансии,\n"
+            "пожалуйста, подпишитесь на каналы ниже 👇\n\n"
+            "Это займёт меньше минуты и помогает поддерживать проект 🚀\n\n"
+        )
 
         builder = InlineKeyboardBuilder()
 
@@ -117,7 +121,7 @@ class SubscriptionMiddleware(BaseMiddleware):
 
         # Кнопка проверки подписки
         builder.button(
-            text="✅ Проверить подписку",
+            text="✅ Я подписался — проверить",
             callback_data="check_subscription"
         )
         builder.adjust(1)
