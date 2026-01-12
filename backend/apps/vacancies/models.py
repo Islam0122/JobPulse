@@ -7,7 +7,7 @@ class Vacancy(models.Model):
         max_length=50,
         unique=True,
         db_index=True,
-        verbose_name="ID на HH.ru"
+        verbose_name="ID"
     )
 
     title = models.CharField(
@@ -88,7 +88,7 @@ class Vacancy(models.Model):
     )
 
     published_at = models.DateTimeField(
-        verbose_name="Дата публикации на HH"
+        verbose_name="Дата публикации"
     )
 
     is_active = models.BooleanField(

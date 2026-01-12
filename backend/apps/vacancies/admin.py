@@ -101,7 +101,7 @@ class VacancyAdmin(admin.ModelAdmin):
 
     def hh_link(self, obj):
         return format_html(
-            '<a href="{}" target="_blank">🔗 HH.ru</a>',
+            '<a href="{}" target="_blank">🔗URL</a>',
             obj.url
         )
 

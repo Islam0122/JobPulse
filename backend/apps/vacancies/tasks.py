@@ -2,7 +2,7 @@ import requests
 import logging
 import time
 from datetime import datetime, timedelta
-from typing import Optional, List, Dict, Tuple
+from typing import Optional, List, Dict, Tuple, Any
 from celery import shared_task
 from django.utils import timezone
 from django.conf import settings
@@ -97,6 +97,12 @@ class DevKGRateLimiter:
 
 hh_rate_limiter = HHRateLimiter()
 devkg_rate_limiter = DevKGRateLimiter()
+
+
+def safe_str(value: Any, default: str = "") -> str:
+    if isinstance(value, str):
+        return value.strip()
+    return default
 
 
 # ============= HH.ru Functions =============
@@ -269,48 +275,51 @@ def extract_skills_from_description(description: str) -> List[str]:
 def normalize_devkg_vacancy(item: Dict) -> Dict:
     """Преобразование вакансии Dev.kg в формат модели"""
 
-    vacancy_type = item.get('type', 'office')
+    vacancy_type = safe_str(item.get("type"), "office")
     employment_map = {
-        'office': 'Полная занятость',
-        'remote': 'Удаленная работа',
-        'internship': 'Стажировка'
+        "office": "Полная занятость",
+        "remote": "Удаленная работа",
+        "internship": "Стажировка",
     }
 
-    price_from = item.get('price_from', 0)
-    price_to = item.get('price_to', 0)
-    currency = item.get('currency', 'KGS').upper()
-    salary_type = item.get('salary', 'monthly')
+    price_from = item.get("price_from") or 0
+    price_to = item.get("price_to") or 0
+    currency = safe_str(item.get("currency"), "KGS").upper()
+    salary_type = safe_str(item.get("salary"), "monthly")
+
+    position = safe_str(item.get("position"), "Без названия")
+    company = safe_str(item.get("organization_name"), "Не указано")
+    city = safe_str(item.get("city"), "Бишкек")
+    slug = safe_str(item.get("slug"))
 
     description_parts = []
-    if item.get('position'):
-        description_parts.append(f"Позиция: {item['position']}")
-    if item.get('organization_name'):
-        description_parts.append(f"Компания: {item['organization_name']}")
-    if item.get('city'):
-        description_parts.append(f"Город: {item['city']}")
+    if position:
+        description_parts.append(f"Позиция: {position}")
+    if company:
+        description_parts.append(f"Компания: {company}")
+    if city:
+        description_parts.append(f"Город: {city}")
 
     description = "\n".join(description_parts) if description_parts else "Описание не указано"
-    skills = extract_skills_from_description(item.get('position', ''))
-
-    slug = item.get('slug', '')
+    skills = extract_skills_from_description(position)
 
     return {
-        "hh_id": f"devkg_{slug}",  # Префикс для различения источника
-        "title": item.get('position', 'Без названия')[:255],
-        "company_name": item.get('organization_name', 'Не указано')[:255],
-        "company_url": f"https://devkg.com/job/{slug}" if slug else None,
+        "hh_id": f"devkg_{slug or position.lower().replace(' ', '_')}",
+        "title": position[:255]+" (DEV KG)",
+        "company_name": company[:255],
+        "company_url": f"https://devkg.com/ru/jobs/{slug}" if slug else None,
         "description": description,
         "salary_from": price_from if price_from > 0 else None,
         "salary_to": price_to if price_to > 0 else None,
         "currency": currency,
-        "location": item.get('city', 'Бишкек')[:255],
+        "location": city[:255],
         "experience": "",
-        "employment": employment_map.get(vacancy_type, 'Не указано')[:50],
+        "employment": employment_map.get(vacancy_type, "Не указано")[:50],
         "schedule": salary_type[:50],
-        "url": f"https://devkg.com/job/{slug}"[:200],
+        "url": f"https://devkg.com/ru/jobs/{slug}"[:200] if slug else None,
         "skills": skills,
-        "published_at": parse_hh_date(item.get('created_at', '')),
-        "is_active": not item.get('is_archived', False)
+        "published_at": parse_hh_date(item.get("created_at")),
+        "is_active": not item.get("is_archived", False),
     }
 
 
@@ -340,7 +349,7 @@ def normalize_hh_vacancy(item: Dict) -> Dict:
 
     return {
         "hh_id": str(item.get('id')),  # Оставляем как есть для HH
-        "title": item.get('name', 'Без названия')[:255],
+        "title": item.get('name', 'Без названия')[:255]+" (HH)",
         "company_name": employer.get('name', 'Не указано')[:255],
         "company_url": employer.get('alternate_url'),
         "description": description,
