@@ -217,61 +217,183 @@ SPECTACULAR_SETTINGS = {
 }
 from celery.schedules import crontab
 
-# Оптимизированное расписание Celery Beat
+# ============= Celery Configuration =============
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+
+# Базовые настройки
+CELERY_TASK_ACKS_LATE = True
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_TASK_ALWAYS_EAGER = False
+
+# Таймауты и лимиты
+CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 минут
+CELERY_TASK_SOFT_TIME_LIMIT = 25 * 60  # 25 минут
+CELERY_RESULT_EXPIRES = 3600  # 1 час
+
+# Сериализация
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TIMEZONE = 'Asia/Bishkek'
+CELERY_ENABLE_UTC = True
+
+# ============= API Rate Limits =============
+HH_API_RATE_LIMIT = 150  # запросов в минуту
+HH_API_MIN_INTERVAL = 0.5  # секунд между запросами
+DEVKG_API_RATE_LIMIT = 60  # запросов в минуту
+DEVKG_API_MIN_INTERVAL = 1.0  # секунд между запросами
+
+# ============= Оптимизированное расписание Celery Beat =============
 CELERY_BEAT_SCHEDULE = {
-    # Парсинг вакансий каждые 30 минут (оптимально для HH.ru)
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 📥 ПАРСИНГ ВАКАНСИЙ
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # HH.ru - каждые 2 часа (рабочее время)
     'parse-hh-vacancies': {
         'task': 'apps.vacancies.tasks.parse_hh_vacancies',
-        'schedule': crontab(minute='*/30'),  # Каждые 30 минут
+        'schedule': crontab(
+            minute=0,
+            hour='8-20/2'  # 8:00, 10:00, 12:00, 14:00, 16:00, 18:00, 20:00
+        ),
         'options': {
-            'expires': 1800,  # Задача истекает через 30 минут
+            'queue': 'parsing',
+            'priority': 5,
+            'expires': 3600,  # Задача истекает через 1 час
         }
     },
 
-    # Рассылка уведомлений каждые 15 минут
+    # Dev.kg - каждые 4 часа
+    'parse-devkg-vacancies': {
+        'task': 'apps.vacancies.tasks.parse_devkg_vacancies',
+        'schedule': crontab(
+            minute=30,
+            hour='9-21/4'  # 9:30, 13:30, 17:30, 21:30
+        ),
+        'kwargs': {'max_pages': 3},
+        'options': {
+            'queue': 'parsing',
+            'priority': 5,
+            'expires': 3600,
+        }
+    },
+
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 📨 УВЕДОМЛЕНИЯ
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Уведомления о новых вакансиях - каждые 20 минут (рабочее время)
     'notify-new-vacancies': {
         'task': 'apps.vacancies.tasks.notify_users_about_new_vacancies',
-        'schedule': crontab(minute='*/15'),
+        'schedule': crontab(
+            minute='*/20',
+            hour='8-22'  # С 8:00 до 22:00
+        ),
         'options': {
-            'expires': 900,
+            'queue': 'notifications',
+            'priority': 7,
+            'expires': 1200,  # 20 минут
         }
-    },
-
-    # Деактивация старых вакансий каждую ночь в 2:00
-    'deactivate-old-vacancies': {
-        'task': 'apps.vacancies.tasks.deactivate_old_vacancies',
-        'schedule': crontab(hour=2, minute=0),
-    },
-
-    # Очистка старых логов раз в неделю (понедельник в 3:00)
-    'cleanup-old-logs': {
-        'task': 'apps.vacancies.tasks.cleanup_old_logs',
-        'schedule': crontab(day_of_week=1, hour=3, minute=0),
     },
 
     # Ежедневные уведомления пользователям в 9:00
     'send-daily-notifications': {
         'task': 'apps.users.tasks.send_daily_notifications',
         'schedule': crontab(hour=9, minute=0),
+        'options': {
+            'queue': 'notifications',
+            'priority': 6,
+        }
     },
 
-    # Очистка кеша каждую ночь в 00:00
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 🧹 ОБСЛУЖИВАНИЕ
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Деактивация старых вакансий - каждую ночь в 2:00
+    'deactivate-old-vacancies': {
+        'task': 'apps.vacancies.tasks.deactivate_old_vacancies',
+        'schedule': crontab(hour=2, minute=0),
+        'options': {
+            'queue': 'maintenance',
+            'priority': 3,
+        }
+    },
+
+    # Очистка старых логов - каждое воскресенье в 3:00
+    'cleanup-old-logs': {
+        'task': 'apps.vacancies.tasks.cleanup_old_logs',
+        'schedule': crontab(day_of_week=0, hour=3, minute=0),
+        'options': {
+            'queue': 'maintenance',
+            'priority': 2,
+        }
+    },
+
+    # Очистка кеша - каждую ночь в 00:00
     'clear-cache-midnight': {
         'task': 'apps.users.tasks.clear_expired_cache',
         'schedule': crontab(hour=0, minute=0),
+        'options': {
+            'queue': 'maintenance',
+            'priority': 3,
+        }
     },
 
-    # Обновление статистики каждый час
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    # 📊 СТАТИСТИКА
+    # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    # Обновление статистики - каждый час
     'update-statistics': {
         'task': 'apps.users.tasks.update_user_statistics',
-        'schedule': crontab(minute=0),  # Каждый час
+        'schedule': crontab(minute=0),
+        'options': {
+            'queue': 'statistics',
+            'priority': 4,
+        }
     },
 }
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
-CELERY_TASK_ACKS_LATE = True
-CELERY_WORKER_PREFETCH_MULTIPLIER = 1
-CELERY_TASK_REJECT_ON_WORKER_LOST = True
-CELERY_TASK_ALWAYS_EAGER = False
-CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_TASK_ROUTES = {
+    # Парсинг
+    'apps.vacancies.tasks.parse_hh_vacancies': {'queue': 'parsing'},
+    'apps.vacancies.tasks.parse_devkg_vacancies': {'queue': 'parsing'},
+    'apps.vacancies.tasks.parse_all_sources': {'queue': 'parsing'},
+
+    # Уведомления
+    'apps.vacancies.tasks.notify_users_about_new_vacancies': {'queue': 'notifications'},
+    'apps.users.tasks.send_daily_notifications': {'queue': 'notifications'},
+
+    # Обслуживание
+    'apps.vacancies.tasks.deactivate_old_vacancies': {'queue': 'maintenance'},
+    'apps.vacancies.tasks.cleanup_old_logs': {'queue': 'maintenance'},
+    'apps.users.tasks.clear_expired_cache': {'queue': 'maintenance'},
+
+    # Статистика
+    'apps.users.tasks.update_user_statistics': {'queue': 'statistics'},
+}
+
+CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_DEFAULT_EXCHANGE = 'default'
+CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
+
+CELERY_TASK_QUEUE_PRIORITIES = {
+    'notifications': 7,
+    'parsing': 5,
+    'statistics': 4,
+    'maintenance': 2,
+    'default': 1,
+}
+
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False
+CELERY_WORKER_LOG_FORMAT = '[%(asctime)s: %(levelname)s/%(processName)s] %(message)s'
+CELERY_WORKER_TASK_LOG_FORMAT = '[%(asctime)s: %(levelname)s/%(processName)s][%(task_name)s(%(task_id)s)] %(message)s'
+CELERY_WORKER_SEND_TASK_EVENTS = True
+CELERY_TASK_SEND_SENT_EVENT = True
+CELERY_TRACK_STARTED = True
+CELERY_TASK_AUTORETRY_FOR = (Exception,)
+CELERY_TASK_MAX_RETRIES = 3
+CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # 1 минута
