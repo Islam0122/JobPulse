@@ -16,8 +16,10 @@ logo = "AgACAgIAAxkBAAICS2lb4BQM-xj2JkiR0jz7BfJDHv6RAAKAEWsbTSzYSl2zO5BmDzyyAQAD
 async def handle_comment(message: Message):
     text = message.text.removeprefix("/comment").strip()
     if not text:
-        await message.answer(
-            "💬 *Хотите оставить комментарий?*\n\n"
+
+        await message.answer_photo(
+            photo=logo,
+            caption="💬 *Хотите оставить комментарий?*\n\n"
             "Просто напишите его сразу после команды 👇\n\n"
             "`/comment Мне очень нравится ваш бот 👍`\n\n"
             "Это может быть:\n"
