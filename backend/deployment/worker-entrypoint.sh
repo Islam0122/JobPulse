@@ -5,4 +5,4 @@ if ! id -u celeryuser >/dev/null 2>&1; then
     useradd -m celeryuser
 fi
 
-exec su celeryuser -c "celery -A config worker -l info --concurrency=4"
+exec su celeryuser -c "celery -A config worker -l info -Q parsing,notifications,maintenance,statistics --concurrency=4"

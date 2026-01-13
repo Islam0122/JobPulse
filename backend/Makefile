@@ -90,7 +90,7 @@ dev:
 		sleep 1; \
 		gnome-terminal --tab --title="Redis" -- bash -c "redis-server; exec bash" & \
 		sleep 2; \
-		gnome-terminal --tab --title="Celery Worker" -- bash -c "cd $(PWD) && source venv/bin/activate && celery -A config worker -l info; exec bash" & \
+		gnome-terminal --tab --title="Celery Worker" -- bash -c "cd $(PWD) && source venv/bin/activate && celery -A config worker -l info -Q parsing,notifications,maintenance,statistics; exec bash" & \
 		gnome-terminal --tab --title="Celery Beat" -- bash -c "cd $(PWD) && source venv/bin/activate && celery -A config beat -l info; exec bash" & \
 		echo "${GREEN}✅ Все сервисы запущены!${NC}"; \
 	elif command -v osascript > /dev/null; then \

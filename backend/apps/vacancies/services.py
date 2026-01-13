@@ -336,7 +336,7 @@ def format_vacancy_message(vacancy: Vacancy) -> str:
             skills_text += f" и еще {len(vacancy.skills) - 7}"
         lines.append(f"\n🛠 <b>Навыки:</b> {skills_text}")
 
-    lines.append(f"\n<a href='{vacancy.url}'>📎 Посмотреть на HH.ru</a>")
+    lines.append(f"\n<a href='{vacancy.url}'>📎 Посмотреть URL</a>")
 
     return "\n".join(lines)
 

@@ -226,7 +226,6 @@ CELERY_RESULT_BACKEND = REDIS_URL
 CELERY_TASK_ACKS_LATE = True
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1
 CELERY_TASK_REJECT_ON_WORKER_LOST = True
-CELERY_TASK_ALWAYS_EAGER = False
 
 # Таймауты и лимиты
 CELERY_TASK_TIME_LIMIT = 30 * 60  # 30 минут
@@ -378,9 +377,10 @@ CELERY_TASK_ROUTES = {
     'apps.users.tasks.update_user_statistics': {'queue': 'statistics'},
 }
 
-CELERY_TASK_DEFAULT_QUEUE = 'default'
+CELERY_TASK_DEFAULT_QUEUE = 'maintenance'
 CELERY_TASK_DEFAULT_EXCHANGE = 'default'
-CELERY_TASK_DEFAULT_ROUTING_KEY = 'default'
+CELERY_TASK_DEFAULT_ROUTING_KEY = 'maintenance'
+
 
 CELERY_TASK_QUEUE_PRIORITIES = {
     'notifications': 7,
