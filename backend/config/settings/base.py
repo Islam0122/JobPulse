@@ -89,10 +89,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'ru-RU'
-TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_L10N = True
+TIME_ZONE = 'UTC'
 USE_TZ = True
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -236,8 +237,8 @@ CELERY_RESULT_EXPIRES = 3600  # 1 час
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TIMEZONE = 'Asia/Bishkek'
 CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'UTC'
 
 # ============= API Rate Limits =============
 HH_API_RATE_LIMIT = 150  # запросов в минуту
@@ -394,6 +395,6 @@ CELERY_WORKER_TASK_LOG_FORMAT = '[%(asctime)s: %(levelname)s/%(processName)s][%(
 CELERY_WORKER_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
 CELERY_TRACK_STARTED = True
-CELERY_TASK_AUTORETRY_FOR = (Exception,)
+CELERY_TASK_AUTORETRY_FOR = (TimeoutError, ConnectionError)
 CELERY_TASK_MAX_RETRIES = 3
 CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # 1 минута
