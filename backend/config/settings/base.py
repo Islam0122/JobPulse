@@ -262,9 +262,9 @@ CELERY_BEAT_SCHEDULE = {
         'options': {
             'queue': 'parsing',
             'priority': 5,
-            'expires': 3600,  # Задача истекает через 1 час
         }
     },
+
 
     # Dev.kg - каждые 4 часа
     'parse-devkg-vacancies': {
@@ -277,7 +277,6 @@ CELERY_BEAT_SCHEDULE = {
         'options': {
             'queue': 'parsing',
             'priority': 5,
-            'expires': 3600,
         }
     },
 
@@ -295,7 +294,6 @@ CELERY_BEAT_SCHEDULE = {
         'options': {
             'queue': 'notifications',
             'priority': 7,
-            'expires': 1200,  # 20 минут
         }
     },
 
