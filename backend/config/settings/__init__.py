@@ -7,4 +7,4 @@ if ENV == 'production':
 elif ENV == 'testing':
     from .testing import *
 else:
-    from .development import *
+    from .production import *
