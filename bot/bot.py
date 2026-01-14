@@ -17,6 +17,8 @@ from handlers import (
     comment,
 )
 from middlewares.subscription_middleware import SubscriptionMiddleware
+from aiogram.types import BotCommandScopeDefault
+
 
 
 logging.basicConfig(
@@ -30,10 +32,14 @@ async def setup_bot_commands(bot: Bot):
     """
     Кнопки меню Telegram (≡ Menu)
     """
-    await bot.set_my_commands([
-        BotCommand(command="start", description="🏠 Главное меню"),
-        BotCommand(command="comment", description="💬 Оставить комментарий"),
-    ])
+    await bot.delete_my_commands(scope=BotCommandScopeDefault())
+    await bot.set_my_commands(
+        [
+            BotCommand(command="start", description="🏠 Главное меню"),
+            BotCommand(command="comment", description="💬 Оставить комментарий"),
+        ],
+        scope=BotCommandScopeDefault()
+    )
 
 
 async def main():
@@ -54,7 +60,7 @@ async def main():
     dp.include_router(vacancies.router)
     dp.include_router(insights.router)
     dp.include_router(comment.router)
-    dp.include_router(echo.router)  # всегда последний
+    dp.include_router(echo.router)
 
     logger.info("🤖 Бот запущен и готов к работе!")
     logger.info(f"📡 Backend API: {config.BACKEND_URL}")
