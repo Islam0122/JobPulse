@@ -4,7 +4,7 @@ from apps.users.models import User, Stack, WorkFormat, EmploymentType
 
 class Vacancy(models.Model):
     hh_id = models.CharField(
-        max_length=50,
+        max_length=250,
         unique=True,
         db_index=True,
         verbose_name="ID"
@@ -57,21 +57,21 @@ class Vacancy(models.Model):
     )
 
     experience = models.CharField(
-        max_length=50,
+        max_length=250,
         blank=True,
         null=True,
         verbose_name="Требуемый опыт"
     )
 
     employment = models.CharField(
-        max_length=50,
+        max_length=250,
         blank=True,
         null=True,
         verbose_name="Тип занятости"
     )
 
     schedule = models.CharField(
-        max_length=50,
+        max_length=250,
         blank=True,
         null=True,
         verbose_name="График работы"

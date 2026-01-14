@@ -18,6 +18,7 @@ class VacancyAdmin(admin.ModelAdmin):
         "published_at",
         "is_active",
         "notified_count",
+        "created_at",
         "hh_link"
     )
 
