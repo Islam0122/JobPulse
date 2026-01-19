@@ -12,6 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-super-secret-key-change-in-production')
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEBUG = env.bool('DEBUG', default=False)
+GIGACHAT_CLIENT_ID = env.str('GIGACHAT_CLIENT_ID', default='')
+GIGACHAT_SECRET = env.str('GIGACHAT_SECRET', default='')
+
+
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.railway.app',
@@ -399,3 +403,4 @@ CELERY_TASK_AUTORETRY_FOR = (TimeoutError, ConnectionError)
 CELERY_TASK_MAX_RETRIES = 3
 CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # 1 минута
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
