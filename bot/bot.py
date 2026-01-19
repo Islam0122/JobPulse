@@ -15,6 +15,7 @@ from handlers import (
     vacancies,
     profile_edit,
     comment,
+    resume_analysis
 )
 from middlewares.subscription_middleware import SubscriptionMiddleware
 from aiogram.types import BotCommandScopeDefault
@@ -36,6 +37,7 @@ async def setup_bot_commands(bot: Bot):
     await bot.set_my_commands(
         [
             BotCommand(command="start", description="🏠 Главное меню"),
+            BotCommand(command="analyze", description="📄 Анализ резюме"),
             BotCommand(command="comment", description="💬 Оставить комментарий"),
         ],
         scope=BotCommandScopeDefault()
@@ -60,6 +62,7 @@ async def main():
     dp.include_router(vacancies.router)
     dp.include_router(insights.router)
     dp.include_router(comment.router)
+    dp.include_router(resume_analysis.router)
     dp.include_router(echo.router)
 
     logger.info("🤖 Бот запущен и готов к работе!")

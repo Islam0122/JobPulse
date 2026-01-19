@@ -318,5 +318,70 @@ class APIClient:
             data=data
         )
 
+    async def analyze_resume(
+            self,
+            telegram_id: int,
+            resume_text: str
+    ) -> Optional[Dict]:
+        """
+        Отправить резюме на AI-анализ
+
+        Args:
+            telegram_id: Telegram ID пользователя
+            resume_text: Извлечённый текст резюме
+
+        Returns:
+            Dict с id анализа и статусом
+        """
+        data = {
+            "telegram_id": telegram_id,
+            "resume_text": resume_text
+        }
+
+        return await self._make_request(
+            "POST",
+            "resume-analysis/",
+            data=data
+        )
+
+    async def get_resume_analysis(
+            self,
+            analysis_id: int
+    ) -> Optional[Dict]:
+        """
+        Получить результат анализа резюме
+
+        Args:
+            analysis_id: ID анализа
+
+        Returns:
+            Dict с результатом анализа
+        """
+        return await self._make_request(
+            "GET",
+            f"resume-analysis/{analysis_id}/"
+        )
+
+    async def get_user_resume_analyses(
+            self,
+            telegram_id: int
+    ) -> List[Dict]:
+        """
+        Получить историю анализов пользователя
+
+        Args:
+            telegram_id: Telegram ID пользователя
+
+        Returns:
+            Список анализов
+        """
+        params = {"telegram_id": telegram_id}
+        result = await self._make_request(
+            "GET",
+            "resume-analyses/",
+            params=params
+        )
+        return result.get("results", []) if result else []
+
 
 api = APIClient()

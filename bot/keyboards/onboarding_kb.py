@@ -197,6 +197,7 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     buttons = [
         ("💼 Вакансии", "menu:vacancies"),
         ("📊 Мой профиль", "menu:profile"),
+        ("📄 Анализ резюме", "analyze:start"),
         ("📈 Аналитика", "menu:insights"),
         ("🔔 Настройки", "menu:settings"),
         ("❓ Помощь", "menu:help"),
@@ -206,7 +207,7 @@ def get_main_menu_keyboard() -> InlineKeyboardMarkup:
     for text, cb in buttons:
         builder.button(text=text, callback_data=cb)
 
-    builder.adjust(1, 2, 2, 2)  # Раскладка кнопок
+    builder.adjust(1, 1, 2, 2, 2)  # Раскладка кнопок
     return builder.as_markup()
 
 
