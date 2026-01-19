@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'apps.vacancies',
     'apps.broadcastprompt',
     'apps.review',
+    'apps.resume_analysis',
 
 ]
 
