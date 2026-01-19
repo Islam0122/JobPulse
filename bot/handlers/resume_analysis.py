@@ -210,8 +210,8 @@ async def process_resume_pdf(message: Message, state: FSMContext, bot: Bot):
             return
 
         # Обновляем сообщение
-        await processing_msg.edit_caption(
-            caption=(
+        await processing_msg.answer(
+            text=(
                 "✅ <b>Текст извлечён</b>\n\n"
                 "📊 Объём текста: ~{} символов\n\n"
                 "🤖 Отправляю на AI-анализ...\n"
@@ -406,16 +406,10 @@ async def show_analysis_result(message: Message, analysis: dict, state: FSMConte
         for i, trend in enumerate(trends[:3], 1):
             text += f"{i}. {html.escape(trend)}\n"
 
-    # Кнопки
-    builder = InlineKeyboardBuilder()
-    builder.button(text="📄 Новый анализ", callback_data="analyze:restart")
-    builder.button(text="🏠 Главное меню", callback_data="menu:home")
-    builder.adjust(1)
 
-    await message.edit_caption(
-        caption=text,
+    await message.answer(
+        text=text,
         parse_mode="HTML",
-        reply_markup=builder.as_markup()
     )
 
     await state.clear()
