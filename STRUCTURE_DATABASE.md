@@ -563,7 +563,6 @@ stats = {
         user=user
     ).count(),
 }
-
 # Find active vacancies from last 24 hours
 from datetime import timedelta
 from django.utils import timezone
