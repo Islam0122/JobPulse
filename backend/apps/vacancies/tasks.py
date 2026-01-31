@@ -372,6 +372,27 @@ def normalize_hh_vacancy(item: Dict) -> Dict:
     }
 
 
+def normalize_telegram_vacancy(item: Dict) -> Dict:
+    return {
+        "hh_id": item.get("hh_id"),
+        "title": item.get("title", "Без названия")[:255],
+        "company_name": item.get("company_name", "Не указано")[:255],
+        "company_url": item.get("company_url"),
+        "description": item.get("description", "Описание отсутствует"),
+        "salary_from": item.get("salary_from"),
+        "salary_to": item.get("salary_to"),
+        "currency": item.get("currency", "RUB"),
+        "location": item.get("location", "Удаленно")[:255],
+        "experience": item.get("experience", "")[:250],
+        "employment": item.get("employment", {}).get("name", "")[:250],
+        "schedule": item.get("schedule", {}).get("name", "")[:250],
+        "url": item.get("url", "")[:200],
+        "skills": item.get("skills", []),
+        "published_at": parse_hh_date(item.get("published_at")) if isinstance(item.get("published_at"), str) else item.get("published_at"),
+        "is_active": item.get("is_active", True),
+    }
+
+
 def save_vacancies_batch(vacancies: List[Dict], source: str = "hh") -> Tuple[int, int]:
     """Сохранение пакета вакансий"""
     new_count = 0
@@ -386,7 +407,7 @@ def save_vacancies_batch(vacancies: List[Dict], source: str = "hh") -> Tuple[int
         if source == "devkg":
             normalized_vacancies.append(normalize_devkg_vacancy(item))
         elif source == "telegram":
-
+            normalized_vacancies.append(normalize_telegram_vacancy(item))  # ← ДОБАВИТЬ ЭТУ СТРОКУ
         else:
             normalized_vacancies.append(normalize_hh_vacancy(item))
 

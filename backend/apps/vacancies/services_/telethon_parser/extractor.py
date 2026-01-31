@@ -56,7 +56,7 @@ class VacancyExtractor:
 
             return {
                 'hh_id': vacancy_id,
-                'title': title + ' Telegram',
+                'title': title + ' <-- Telegram channels',
                 'company_name': company or 'Не указано',
                 'company_url': None,
                 'description': self._clean_text(message_text),
@@ -64,7 +64,7 @@ class VacancyExtractor:
                 'salary_to': salary_to,
                 'currency': currency or 'RUB',
                 'location': location or 'Удаленно',
-                'experience': experience,
+                'experience': experience or " ",
                 'employment': {'name': 'Полная занятость'},
                 'schedule': {'name': ''},
                 'url': f'https://t.me/{chat_username}/{message_id}',
