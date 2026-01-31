@@ -38,3 +38,7 @@ celerybeat.pid
 # Docker
 *.db
 docker-compose.override.yml
+
+sessions/
+*.session
+*.session-journal

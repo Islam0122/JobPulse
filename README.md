@@ -68,7 +68,7 @@ cd ../bot
 cp .env.example .env
 # Edit .env with your BOT_TOKEN and BACKEND_URL
 
-# Start services
+# Start services_
 cd ../backend
 make dev  # Terminal 1: Django
 # In other terminals:
@@ -349,7 +349,7 @@ make install              # Install dependencies
 make migrate              # Run migrations
 
 # Running Services
-make dev                  # Run all services locally
+make dev                  # Run all services_ locally
 make run                  # Django server only
 make redis                # Redis server
 make celery               # Celery worker
@@ -450,7 +450,7 @@ git clone https://github.com/yourusername/jobpulse.git
 cd jobpulse/backend
 make setup
 
-# 4. Start services with systemd
+# 4. Start services_ with systemd
 sudo systemctl start gunicorn
 sudo systemctl start celery
 sudo systemctl start celery-beat

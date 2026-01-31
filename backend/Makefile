@@ -280,3 +280,4 @@ requirements:
 	@echo "${GREEN}📋 Создание requirements.txt...${NC}"
 	@. venv/bin/activate && pip freeze > requirements.txt
 	@echo "${GREEN}✅ requirements.txt обновлен${NC}"
+

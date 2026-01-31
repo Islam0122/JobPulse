@@ -284,7 +284,18 @@ CELERY_BEAT_SCHEDULE = {
             'priority': 5,
         }
     },
-
+    # Telegram
+    'parse-telegram-vacancies': {
+        'task': 'apps.vacancies.tasks.parse_telegram_vacancies',
+        'schedule': crontab(
+            minute=15,
+            hour='*/6'  # 00:15, 06:15, 12:15, 18:15
+        ),
+        'options': {
+            'queue': 'parsing',
+            'priority': 5,
+        }
+    },
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     # 📨 УВЕДОМЛЕНИЯ
     # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -404,3 +415,4 @@ CELERY_TASK_MAX_RETRIES = 3
 CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # 1 минута
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
+from .telethon import *

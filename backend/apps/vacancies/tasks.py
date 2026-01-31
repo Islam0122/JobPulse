@@ -11,6 +11,11 @@ from django.db.models import Prefetch
 from .models import Vacancy, ParsingLog, VacancyNotification
 from apps.users.models import User
 from .services import send_vacancy_notification, match_vacancy_to_users_v2
+import asyncio
+from .services_.telethon_parser import (
+    TelegramVacancyParser,
+    TELEGRAM_JOB_CHANNELS
+)
 
 logger = logging.getLogger(__name__)
 
@@ -380,6 +385,8 @@ def save_vacancies_batch(vacancies: List[Dict], source: str = "hh") -> Tuple[int
     for item in vacancies:
         if source == "devkg":
             normalized_vacancies.append(normalize_devkg_vacancy(item))
+        elif source == "telegram":
+
         else:
             normalized_vacancies.append(normalize_hh_vacancy(item))
 
@@ -583,6 +590,16 @@ def parse_all_sources(self):
         logger.error(f"Ошибка при парсинге Dev.kg: {e}")
         results['devkg'] = {"status": "error", "error": str(e)}
 
+    time.sleep(5)
+
+    # Telegram
+    try:
+        telegram_result = parse_telegram_vacancies.apply()
+        results['telegram'] = telegram_result.get()
+    except Exception as e:
+        logger.error(f"Ошибка при парсинге Telegram: {e}")
+        results['telegram'] = {"status": "error", "error": str(e)}
+
     # Запуск уведомлений
     total_new = results.get('hh', {}).get('new', 0) + results.get('devkg', {}).get('new', 0)
     if total_new > 0:
@@ -675,3 +692,62 @@ def cleanup_old_logs():
 
     logger.info(f"🧹 Удалено логов: {deleted_count}")
     return {"deleted": deleted_count}
+
+
+# ============= Telegram Parsing Task =============
+
+@shared_task(bind=True, max_retries=3)
+def parse_telegram_vacancies(self, category: str = None):
+    log = ParsingLog.objects.create(status="running")
+
+    try:
+        logger.info("🚀 [TELEGRAM] Начинаем парсинг Telegram-каналов...")
+        parser = TelegramVacancyParser()
+        vacancies = asyncio.run(
+            parser.parse_channels(
+                category=category,
+                limit_per_channel=settings.TELETHON_MESSAGES_LIMIT,
+                days_ago=settings.TELETHON_DAYS_AGO
+            )
+        )
+        if not vacancies:
+            logger.warning("[TELEGRAM] Вакансий не найдено")
+            log.status = "completed"
+            log.finished_at = timezone.now()
+            log.save()
+            return {"status": "no_vacancies", "message": "Вакансий не найдено"}
+
+        new_count, updated_count = save_vacancies_batch(vacancies, source="telegram")
+
+        log.total_found = len(vacancies)
+        log.new_vacancies = new_count
+        log.updated_vacancies = updated_count
+        log.finished_at = timezone.now()
+        log.status = "completed"
+        log.save()
+
+        logger.info(
+            f"✅ [TELEGRAM] Парсинг завершен: найдено {len(vacancies)}, "
+            f"новых {new_count}, обновлено {updated_count}"
+        )
+
+        # Запускаем уведомления
+        if new_count > 0:
+            notify_users_about_new_vacancies.apply_async(countdown=10)
+
+        return {
+            "status": "success",
+            "source": "telegram",
+            "total": len(vacancies),
+            "new": new_count,
+            "updated": updated_count
+        }
+
+    except Exception as e:
+        logger.error(f"❌ [TELEGRAM] Критическая ошибка парсинга: {e}", exc_info=True)
+        log.status = "failed"
+        log.errors = str(e)
+        log.finished_at = timezone.now()
+        log.save()
+        raise self.retry(exc=e, countdown=60 * (2 ** self.request.retries))
+
