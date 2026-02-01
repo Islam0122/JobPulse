@@ -57,7 +57,7 @@ class TelegramVacancyParser:
                 logger.error(f"❌ {channel}: ошибка - {e}")
 
         logger.info(f"🎉 Парсинг завершён. Всего вакансий: {len(all_vacancies)}")
-
+        await self.client_wrapper.disconnect()
         return all_vacancies
 
     async def _parse_channel(
